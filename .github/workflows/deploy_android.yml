@@ -7,7 +7,30 @@ on:
     branches: [ main ]
 
 jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: set up repository
+        uses: actions/checkout@v2
+      - name: set up java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - name: install flutter
+        uses: subosito/flutter-action@v2.3.0
+        with:
+          flutter-version: '2.10.2'
+          channel: 'stable'
+      - name: flutter pub get
+        run: flutter pub get
+      - name: flutter analyze
+        run: flutter analyze
+
   build:
+    name: build
     runs-on: ubuntu-latest
 
     steps:
@@ -42,6 +65,7 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
   deploy:
+    name: deploy
     needs: [build]
     runs-on: ubuntu-latest
     steps:
