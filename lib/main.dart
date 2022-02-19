@@ -28,7 +28,7 @@ class StartWidget extends StatelessWidget {
       theme:
           ThemeData(primarySwatch: Colors.blue, textTheme: AppTheme.textTheme),
       initialRoute: '/',
-      home: AppHomeScreen(),
+      home: const AppHomeScreen(),
     );
   }
 }

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class AppHomeScreen extends StatefulWidget {
+  const AppHomeScreen({Key? key}) : super(key: key);
+
   @override
   _AppHomeScreenState createState() => _AppHomeScreenState();
 }
@@ -35,7 +37,7 @@ class _AppHomeScreenState extends State<AppHomeScreen>
     SizeConfig().init(context);
     return Stack(children: [
       Padding(
-          padding: EdgeInsets.only(bottom: 0),
+          padding: const EdgeInsets.only(bottom: 0),
           // padding: EdgeInsets.only(bottom: bannerAd.size.height.toDouble()),
           child: PersistentTabView(context,
               controller: _controller,
@@ -53,11 +55,11 @@ class _AppHomeScreenState extends State<AppHomeScreen>
               ),
               popAllScreensOnTapOfSelectedTab: true,
               popActionScreens: PopActionScreensType.all,
-              itemAnimationProperties: ItemAnimationProperties(
+              itemAnimationProperties: const ItemAnimationProperties(
                 duration: Duration(milliseconds: 200),
                 curve: Curves.ease,
               ),
-              screenTransitionAnimation: ScreenTransitionAnimation(
+              screenTransitionAnimation: const ScreenTransitionAnimation(
                 animateTabTransition: true,
                 curve: Curves.ease,
                 duration: Duration(milliseconds: 200),
@@ -68,22 +70,22 @@ class _AppHomeScreenState extends State<AppHomeScreen>
 
   List<Widget> _buildScreens() {
     return [
-      ConfigScreen(),
-      ShowGroupItemsScreen(),
+      const ConfigScreen(),
+      const ShowGroupItemsScreen(),
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.dashboard_customize_rounded),
+        icon: const Icon(Icons.dashboard_customize_rounded),
         title: ("Home"),
         activeColorPrimary: AppTheme.tabItemColor,
         activeColorSecondary: AppTheme.white,
         inactiveColorPrimary: AppTheme.tabItemColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.settings_rounded),
+        icon: const Icon(Icons.settings_rounded),
         title: ("Settings"),
         activeColorPrimary: AppTheme.tabItemColor,
         activeColorSecondary: AppTheme.white,

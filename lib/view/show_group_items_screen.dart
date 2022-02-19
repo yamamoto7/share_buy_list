@@ -22,7 +22,7 @@ class _ShowGroupItemsScreenState extends State<ShowGroupItemsScreen> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: Text("place holder"),
+      child: const Text("place holder"),
     );
   }
 }
