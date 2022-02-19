@@ -5,10 +5,17 @@ class AppTheme {
 
   // Basic App Theme
   static const Color background = Color(0xFFF2F2F2);
+  static const Color mainColorDark = Color(0xFFF2F2F2);
+  static const Color subColorDark = Color(0xFFF2F2F2);
+  static const Color mainColorLight = Color(0xFFF2F2F2);
+  static const Color subColorLight = Color(0xFFF2F2F2);
 
   // Text Color
   static const Color textDark = Color(0xFF2A383D);
   static const Color textLight = Color(0xFF4E626B);
+
+  // Tab Color
+  static const Color tabItemColor = Color(0xFF3A5160);
 
   // Color Utils
   static const Color white = Color(0xFFFFFFFF);
