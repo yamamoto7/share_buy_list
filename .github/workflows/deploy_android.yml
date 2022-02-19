@@ -2,7 +2,7 @@ name: Deploy Android App
 
 on:
   push:
-    branches: [ feature/setup_cd ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -34,7 +34,7 @@ jobs:
 
       - name: build apk
         run: |
-          flutter build apk --release
+          flutter build apk
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
         with:
