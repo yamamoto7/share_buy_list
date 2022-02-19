@@ -21,8 +21,6 @@ class _ShowGroupItemsScreenState extends State<ShowGroupItemsScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
-      child: const Text("place holder"),
-    );
+        alignment: Alignment.center, child: const Text('place holder'));
   }
 }
