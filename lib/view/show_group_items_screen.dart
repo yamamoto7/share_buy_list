@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ShowGroupItemsScreen extends StatefulWidget {
   const ShowGroupItemsScreen({Key? key}) : super(key: key);
