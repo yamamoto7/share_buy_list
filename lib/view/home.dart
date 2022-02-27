@@ -3,7 +3,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/size_config.dart';
 import 'package:share_buy_list/view/config_screen.dart';
-import 'package:share_buy_list/view/show_group_items_screen.dart';
+import 'package:share_buy_list/view/show_goods_group_items_screen.dart';
 
 class AppHomeScreen extends StatefulWidget {
   const AppHomeScreen({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class AppHomeScreen extends StatefulWidget {
 class _AppHomeScreenState extends State<AppHomeScreen>
     with TickerProviderStateMixin {
   AnimationController? animationController;
+  bool visibleLoading = true;
   PersistentTabController? _controller;
 
   @override
@@ -67,8 +68,8 @@ class _AppHomeScreenState extends State<AppHomeScreen>
 
   List<Widget> _buildScreens() {
     return [
+      ShowGoodsGroupItemsScreen(setLoading: setLoading),
       const ConfigScreen(),
-      const ShowGroupItemsScreen(),
     ];
   }
 
@@ -89,5 +90,11 @@ class _AppHomeScreenState extends State<AppHomeScreen>
         inactiveColorPrimary: AppTheme.tabItemColor,
       ),
     ];
+  }
+
+  void setLoading(bool loading) {
+    setState(() {
+      visibleLoading = loading;
+    });
   }
 }
