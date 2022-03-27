@@ -80,7 +80,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - name: set up repository
+        uses: actions/checkout@v2
+      - name: unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.CRYPT_PUB_KEY }}
 
       - name: Download artifact
         uses: actions/download-artifact@v1.0.0
