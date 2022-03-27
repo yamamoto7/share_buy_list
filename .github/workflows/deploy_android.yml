@@ -99,3 +99,4 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           file: android/app-release.apk
+          groups: primary_testers
