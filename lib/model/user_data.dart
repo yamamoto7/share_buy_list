@@ -1,22 +1,19 @@
-import 'package:hive/hive.dart';
-
 class User {
-  String id;
-  String name;
-  int iconId;
-
   User({this.id = '', this.name = '', this.iconId = 1});
-
-  factory User.fromJson(Map<dynamic, dynamic>? parsedJson) {
-    if (parsedJson is Null) {
+  factory User.fromJson(dynamic parsedJson) {
+    if (parsedJson == null) {
       return User();
     }
     return User(
-      id: parsedJson['id'],
-      name: parsedJson['name'],
-      iconId: parsedJson['icon_id'],
+      id: parsedJson['id'] as String,
+      name: parsedJson['name'] as String,
+      iconId: parsedJson['icon_id'] as int,
     );
   }
+
+  String id;
+  String name;
+  int iconId;
 
   Map<dynamic, dynamic> toJson() {
     return <dynamic, dynamic>{'id': id, 'name': name, 'icon_id': iconId};
