@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:share_buy_list/config/env.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:share_buy_list/config/env.dart';
 
 class GraphQlObject {
-  static final _token = GRAPHQL_TOKEN;
+  static const _token = GRAPHQL_TOKEN;
   static AuthLink authLink = AuthLink(
     headerKey: 'x-hasura-admin-secret',
     getToken: () async => _token,
@@ -15,7 +15,7 @@ class GraphQlObject {
     GRAPHQL_HOST_WS,
     config: SocketClientConfig(
       autoReconnect: true,
-      inactivityTimeout: Duration(seconds: 30),
+      inactivityTimeout: const Duration(seconds: 30),
       initialPayload: () async {
         return {
           'headers': {'x-hasura-admin-secret': _token},
@@ -32,15 +32,15 @@ class GraphQlObject {
     ),
   );
 
-  Future<QueryResult> query(String query) async {
-    final QueryResult result = await client.value.query(QueryOptions(
+  Future<dynamic> query(String query) async {
+    final result = await client.value.query<dynamic>(QueryOptions<dynamic>(
       document: gql(query),
     ));
 
     if (result.hasException) {
       // エラー処理
       print(result.exception);
-      for (final GraphQLError error in result.exception!.graphqlErrors) {
+      for (final error in result.exception!.graphqlErrors) {
         print(error.message);
       }
     }
@@ -51,10 +51,10 @@ class GraphQlObject {
 
 GraphQlObject graphQlObject = GraphQlObject();
 
-String addNewUser(String name, int icon_id) {
-  return ("""
+String addNewUser(String name, int iconId) {
+  return '''
     mutation {
-      insert_user(objects: {name: "$name", icon_id: $icon_id}) {
+      insert_user(objects: {name: "$name", icon_id: $iconId}) {
         returning {
           id
           name
@@ -62,36 +62,60 @@ String addNewUser(String name, int icon_id) {
         }
       }
     }
-  """);
+  ''';
 }
 
-String fetchUserGoodsItems(String? user_id) {
-  return ("""
-    query fetchUserGoodsItems {
-      user_goods_item (where: {user_id: {_eq: "$user_id"}}) {
+String fetchUserGoodsItems(String? userId) {
+  return '''
+query fetchUserGoodsItems {
+  user_goods_item (where: {user_id: {_eq: "$userId"}}) {
+    id
+    goods_item {
+      id
+      is_finished
+      is_directory
+      title
+      description
+      created_at
+      updated_at
+      goods_item_id
+      last_updated_user {
         id
-        goods_item {
+        name
+      }
+      user_goods_items {
+        id
+        user {
           id
-          is_finished
-          is_directory
-          title
-          description
-          created_at
-          updated_at
-          last_updated_user {
-            id
-            name
-          }
-          user_goods_items {
-            id
-            user {
-              id
-              name
-              icon_id
-            }
-          }
+          name
+          icon_id
         }
       }
     }
-  """);
+  }
 }
+  ''';
+}
+
+String addGoodsGroupItem = '''
+  mutation AddTask (\$title: String, \$description: String, \$user_id: uuid) {
+    insert_goods_item(
+      objects: {
+        goods_item: {
+          data: {
+            title: \$title,
+            goods_item_id: "0",
+            last_updated_user_id: \$user_id,
+            description: \$description
+          }
+        },
+        user_goods_item: {data: {user_id: \$user_id}}
+      }
+    ) {
+      returning {
+        id
+        goods_item_id
+      }
+    }
+  }
+''';
