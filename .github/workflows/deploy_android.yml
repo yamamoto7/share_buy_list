@@ -36,6 +36,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.CRYPT_PUB_KEY }}
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
