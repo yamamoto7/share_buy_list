@@ -118,16 +118,16 @@ class AppTheme {
         controller: controller,
         cursorColor: formBorderColor,
         keyboardType: TextInputType.text,
-        style: TextStyle(fontSize: 14.0),
+        style: const TextStyle(fontSize: 14),
         decoration: InputDecoration(
           // filled: true,
           // fillColor: AppTheme.inputFormBg,
           labelText: label,
-          labelStyle: TextStyle(color: formBorderColor),
-          enabledBorder: OutlineInputBorder(
+          labelStyle: const TextStyle(color: formBorderColor),
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: formBorderColor),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: formBorderColor),
           ),
         ));
@@ -140,16 +140,16 @@ class AppTheme {
         cursorColor: formBorderColor,
         keyboardType: TextInputType.multiline,
         maxLines: null,
-        style: TextStyle(fontSize: 14.0),
+        style: const TextStyle(fontSize: 14),
         decoration: InputDecoration(
           // filled: true,
           // fillColor: AppTheme.inputFormBg,
           labelText: label,
-          labelStyle: TextStyle(color: formBorderColor),
-          enabledBorder: OutlineInputBorder(
+          labelStyle: const TextStyle(color: formBorderColor),
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: formBorderColor),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: formBorderColor),
           ),
         ));

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:share_buy_list/model/user_data.dart';
 
 class UserConfig {

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:share_buy_list/config/env_secret.dart';
 
 const int MAX_GOODS_GROUP_NUM = 5;
