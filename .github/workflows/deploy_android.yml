@@ -14,6 +14,10 @@ jobs:
     steps:
       - name: set up repository
         uses: actions/checkout@v2
+      - name: unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.CRYPT_PUB_KEY }}
       - name: set up java
         uses: actions/setup-java@v2
         with:
@@ -35,8 +39,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Unlock secrets
+      - name: set up repository
+        uses: actions/checkout@v2
+      - name: unlock secrets
         uses: sliteteam/github-action-git-crypt-unlock@1.2.0
         env:
           GIT_CRYPT_KEY: ${{ secrets.CRYPT_PUB_KEY }}
@@ -86,6 +91,6 @@ jobs:
       - name: Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
         with:
-          appId: ${{secrets.FIREBASE_APP_ID_ANDROID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
+          appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
           file: android/app-release.apk
