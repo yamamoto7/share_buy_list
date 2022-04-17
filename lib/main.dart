@@ -8,17 +8,20 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/user_config.dart';
+import 'package:share_buy_list/data/seed_for_init.dart';
 import 'package:share_buy_list/model/user_data.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
-import 'package:share_buy_list/service/utils.dart';
 import 'package:share_buy_list/view/home.dart';
 
 // ignore: avoid_void_async
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter();
-  final user = await initUser();
+  final box = await Hive.openBox<dynamic>('config');
+  final user = await initUser(box);
+  await initSeed(box, user.id);
   UserConfig().init(user);
+  print(Directory.systemTemp.path);
 
   await SystemChrome.setPreferredOrientations(
           <DeviceOrientation>[DeviceOrientation.portraitUp])
@@ -53,12 +56,13 @@ class StartWidget extends StatelessWidget {
   }
 }
 
-Future<User> initUser() async {
-  final box = await Hive.openBox<dynamic>('config');
-  final userName = castOrNull<String>(box.get('user_name'));
-  final userId = castOrNull<String>(box.get('user_id'));
+Future<User> initUser(dynamic box) async {
+  final userName = box.get('user_name').toString();
+  final dynamic userIdRaw = box.get('user_id');
+  final userId = (userIdRaw == null) ? '' : userIdRaw.toString();
+
   User? user;
-  if (userId is String && userName is String) {
+  if (userId.isNotEmpty) {
     user = User(id: userId, name: userName);
   } else {
     try {
@@ -73,11 +77,28 @@ Future<User> initUser() async {
               .toString());
       await box.put('user_id', user.id);
       await box.put('user_name', user.name);
-      // QueryResult seedQueryResult =
-      // await graphQlObject.query(insertSeedData(user.id));
+      final dynamic seedQueryResult =
+          await graphQlObject.query(seedQueryForInit(user.id));
+      print(seedQueryResult);
+      print(user);
     } catch (e) {
       return User();
     }
   }
   return user;
+}
+
+Future<bool> initSeed(dynamic box, String userId) async {
+  final seedVersion = box.get('seed_version').toString();
+  if (seedVersion.isEmpty && userId.isNotEmpty) {
+    try {
+      final dynamic seedQueryResult =
+          await graphQlObject.query(seedQueryForInit(userId));
+      await box.put('seed_version', 1);
+      print(seedQueryResult);
+    } catch (e) {
+      return false;
+    }
+  }
+  return true;
 }

@@ -11,10 +11,12 @@ import 'package:share_buy_list/view/components/goods_group_card.dart';
 import 'package:share_buy_list/view/components/loading.dart';
 
 class ShowGoodsGroupItemsScreen extends StatefulWidget {
-  const ShowGoodsGroupItemsScreen({Key? key, required this.setLoading})
+  const ShowGoodsGroupItemsScreen(
+      {Key? key, required this.setLoading, required this.openGoodsItem})
       : super(key: key);
 
   final Function setLoading;
+  final Function openGoodsItem;
 
   @override
   _ShowGoodsGroupItemsScreenState createState() =>
@@ -49,6 +51,7 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
         builder: (QueryResult<dynamic> result,
             {VoidCallback? refetch, FetchMore<dynamic>? fetchMore}) {
           if (result.hasException) {
+            print(UserConfig.userID);
             return Text(result.exception.toString());
           }
           if (result.isLoading) {
@@ -90,8 +93,8 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
                             style: AppTheme.bodyTextSmaller);
                       }
                     } else {
-                      return goodsGroupCard(
-                          context, goodsGroupList[index], refetch);
+                      return goodsGroupCard(context, goodsGroupList[index],
+                          widget.openGoodsItem, refetch);
                     }
                   }));
         });

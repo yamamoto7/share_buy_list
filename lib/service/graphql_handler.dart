@@ -103,13 +103,13 @@ String addGoodsGroupItem = '''
       objects: {
         goods_item: {
           data: {
-            title: \$title,
+            title: "\$title",
             goods_item_id: "0",
-            last_updated_user_id: \$user_id,
-            description: \$description
+            last_updated_user_id: "\$user_id",
+            description: "\$description"
           }
         },
-        user_goods_item: {data: {user_id: \$user_id}}
+        user_goods_item: {data: {user_id: "\$user_id"}}
       }
     ) {
       returning {
@@ -119,3 +119,32 @@ String addGoodsGroupItem = '''
     }
   }
 ''';
+
+String updateGoodsItem = '''
+mutation UpdateGoodsItem (\$id: bigint!, \$is_finished: Boolean) {
+  update_goods_item_by_pk(pk_columns: {id: \$id}, _set: {is_finished: \$is_finished}) {
+    updated_at
+  }
+}
+''';
+
+String fetchGoodsItems(String goodsItemID) {
+  return '''
+subscription fetchGoodsItem {
+  goods_item(order_by: {created_at: desc, is_directory: desc, id: desc}, where: {goods_item_id: {_eq: "$goodsItemID"}}) {
+    id
+    is_finished
+    is_directory
+    title
+    description
+    created_at
+    updated_at
+    last_updated_user {
+      id
+      name
+      icon_id
+    }
+  }
+}
+''';
+}

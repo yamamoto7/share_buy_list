@@ -3,11 +3,10 @@ import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/model/goods_group_data.dart';
 
 Widget goodsGroupCard(BuildContext context, GoodsGroupData goodsGroupData,
-    VoidCallback? onRefetch) {
+    Function openGoodsItem, VoidCallback? onRefetch) {
   return GestureDetector(
       onTap: () {
-        // widget.openTodoItem(todoGroupData.todo_item);
-        print('hoge');
+        openGoodsItem(goodsGroupData.goodsItem, 1);
       },
       child: Container(
           margin: const EdgeInsets.only(top: 8, bottom: 8),
@@ -22,7 +21,7 @@ Widget goodsGroupCard(BuildContext context, GoodsGroupData goodsGroupData,
           ),
           child: Padding(
               padding: const EdgeInsets.only(
-                  top: 16, left: 32, right: 16, bottom: 32),
+                  top: 32, left: 32, right: 16, bottom: 32),
               child: Column(children: <Widget>[
                 Row(children: <Widget>[
                   Expanded(

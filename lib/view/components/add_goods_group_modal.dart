@@ -160,12 +160,15 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
                   textStyle: const TextStyle(color: AppTheme.white),
                   primary: AppTheme.colorTMPDark),
               onPressed: () {
+                print(result);
+                print(1);
                 widget.setLoading(true);
                 runMutation(<String, String>{
                   'title': _todoTitleController.text,
                   'description': _todoDescController.text,
                   'user_id': UserConfig.userID,
                 });
+                print(result);
                 // Navigator.pop(context, 1);
               },
               child: const Text('作成'),

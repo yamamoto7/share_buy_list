@@ -8,8 +8,8 @@ class AppTheme {
 
   // Basic App Theme
   static const Color background = Color(0xFFF2F2F2);
-  static const Color mainColorDark = Color(0xFFF2F2F2);
-  static const Color subColorDark = Color(0xFFF2F2F2);
+  static const Color mainColorDark = Color(0xFF2A383D);
+  static const Color subColorDark = Color(0xFF2A383D);
   static const Color mainColorLight = Color(0xFFF2F2F2);
   static const Color subColorLight = Color(0xFFF2F2F2);
 
@@ -22,7 +22,9 @@ class AppTheme {
   static const Color tabItemColor = Color(0xFF3A5160);
 
   // Color For Card
-  static const Color cardBgColor = Color(0xFF2A383D);
+  static const Color cardBgColor = Color(0xFF3A5160);
+  static const Color cardWhiteBgColor = Colors.transparent;
+  static const Color cardWhiteBorderColor = Color(0xFF2A383D);
   static const Color addButtonBgColor = Color(0xFF2A383D);
 
   // Color For Form
@@ -68,16 +70,15 @@ class AppTheme {
     fontWeight: FontWeight.w400,
     fontSize: 16,
     letterSpacing: -0.05,
-    color: textWhite,
+    color: textDark,
   );
 
-  // Text Style For Card
   static const TextStyle cardTextDarkSmaller = TextStyle(
     fontFamily: fontName,
     fontWeight: FontWeight.w400,
     fontSize: 16,
     letterSpacing: -0.05,
-    color: textWhite,
+    color: textDark,
   );
 
   static const TextStyle cardTextDarkH1 = TextStyle(
@@ -85,13 +86,13 @@ class AppTheme {
     fontWeight: FontWeight.w400,
     fontSize: 16,
     letterSpacing: -0.05,
-    color: textWhite,
+    color: textDark,
   );
 
   static const TextStyle cardTextWhite = TextStyle(
     fontFamily: fontName,
     fontWeight: FontWeight.w400,
-    fontSize: 16,
+    fontSize: 14,
     letterSpacing: -0.05,
     color: textWhite,
   );
@@ -99,16 +100,16 @@ class AppTheme {
   static const TextStyle cardTextWhiteSmaller = TextStyle(
     fontFamily: fontName,
     fontWeight: FontWeight.w400,
-    fontSize: 16,
+    fontSize: 12,
     letterSpacing: -0.05,
     color: textWhite,
   );
 
   static const TextStyle cardTextWhiteH1 = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w600,
     fontSize: 16,
-    letterSpacing: -0.05,
+    letterSpacing: 1,
     color: textWhite,
   );
 
