@@ -4,6 +4,10 @@
         android:label="share_buy_list"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6288892025887848~7380394439"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

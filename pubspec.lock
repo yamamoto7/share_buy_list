@@ -154,7 +154,7 @@ packages:
       name: connectivity_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "2.3.0"
   connectivity_plus_linux:
     dependency: transitive
     description:
@@ -168,7 +168,7 @@ packages:
       name: connectivity_plus_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.2"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
@@ -224,7 +224,7 @@ packages:
       name: dbus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.3"
   equatable:
     dependency: transitive
     description:
@@ -272,6 +272,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_slidable:
+    dependency: "direct main"
+    description:
+      name: flutter_slidable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -296,13 +303,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  google_mobile_ads:
+    dependency: "direct main"
+    description:
+      name: google_mobile_ads
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   gql:
     dependency: transitive
     description:
       name: gql
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.1-alpha+1645425888336"
+    version: "0.13.1"
   gql_code_builder2:
     dependency: transitive
     description:
@@ -645,7 +659,7 @@ packages:
       name: shelf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0"
   shelf_web_socket:
     dependency: transitive
     description:
@@ -776,7 +790,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.4.2"
+    version: "2.5.1"
   xdg_directories:
     dependency: transitive
     description:
