@@ -121,7 +121,7 @@ String addGoodsGroupItem = '''
 ''';
 
 String updateGoodsItem = '''
-mutation UpdateGoodsItem (\$id: bigint!, \$is_finished: Boolean) {
+mutation UpdateGoodsItem (\$id: uuid!, \$is_finished: Boolean) {
   update_goods_item_by_pk(pk_columns: {id: \$id}, _set: {is_finished: \$is_finished}) {
     updated_at
   }

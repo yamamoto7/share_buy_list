@@ -16,6 +16,8 @@ class AppTheme {
   // Text Color
   static const Color textDark = Color(0xFF2A383D);
   static const Color textLight = Color(0xFF4E626B);
+  static const Color textExLight = Color.fromARGB(255, 149, 161, 167);
+  static const Color textLightGray = Color.fromARGB(255, 178, 183, 185);
   static const Color textWhite = Color(0xFFFFFFFF);
 
   // Tab Color
@@ -24,7 +26,15 @@ class AppTheme {
   // Color For Card
   static const Color cardBgColor = Color(0xFF3A5160);
   static const Color cardWhiteBgColor = Colors.transparent;
-  static const Color cardWhiteBorderColor = Color(0xFF2A383D);
+  static const Color cardWhiteBorderColor = Color.fromARGB(255, 149, 152, 154);
+  static const Color goodsCardActiveBgColor = Colors.transparent;
+  static const Color goodsCardActiveBorderColor =
+      Color.fromARGB(255, 149, 152, 154);
+  static const Color goodsCardActiveButtonColor = Color(0xFF3A5160);
+  static const Color goodsCardDisableBgColor = Colors.transparent;
+  static const Color goodsCardDisableBorderColor = Colors.transparent;
+  static const Color goodsCardDisableButtonColor =
+      Color.fromARGB(255, 149, 152, 154);
   static const Color addButtonBgColor = Color(0xFF2A383D);
 
   // Color For Form
@@ -68,7 +78,7 @@ class AppTheme {
   static const TextStyle cardTextDark = TextStyle(
     fontFamily: fontName,
     fontWeight: FontWeight.w400,
-    fontSize: 16,
+    fontSize: 14,
     letterSpacing: -0.05,
     color: textDark,
   );
@@ -76,7 +86,7 @@ class AppTheme {
   static const TextStyle cardTextDarkSmaller = TextStyle(
     fontFamily: fontName,
     fontWeight: FontWeight.w400,
-    fontSize: 16,
+    fontSize: 12,
     letterSpacing: -0.05,
     color: textDark,
   );
@@ -111,6 +121,54 @@ class AppTheme {
     fontSize: 16,
     letterSpacing: 1,
     color: textWhite,
+  );
+
+  static const TextStyle goodsCardActiveTitle = TextStyle(
+    fontFamily: fontName,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    letterSpacing: -0.05,
+    color: textDark,
+  );
+
+  static const TextStyle goodsCardActiveText = TextStyle(
+    fontFamily: fontName,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    letterSpacing: -0.05,
+    color: textLight,
+  );
+
+  static const TextStyle goodsCardActiveDate = TextStyle(
+    fontFamily: fontName,
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    letterSpacing: 1,
+    color: textExLight,
+  );
+
+  static const TextStyle goodsCardDisableTitle = TextStyle(
+    fontFamily: fontName,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    letterSpacing: -0.05,
+    color: textExLight,
+  );
+
+  static const TextStyle goodsCardDisableText = TextStyle(
+    fontFamily: fontName,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    letterSpacing: -0.05,
+    color: textExLight,
+  );
+
+  static const TextStyle goodsCardDisableDate = TextStyle(
+    fontFamily: fontName,
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    letterSpacing: 1,
+    color: textLightGray,
   );
 
   static TextField getInputForm(
