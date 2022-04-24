@@ -101,20 +101,39 @@ String addGoodsGroupItem = '''
   mutation AddTask (\$title: String, \$description: String, \$user_id: uuid) {
     insert_goods_item(
       objects: {
-        goods_item: {
-          data: {
-            title: "\$title",
-            goods_item_id: "0",
-            last_updated_user_id: "\$user_id",
-            description: "\$description"
-          }
-        },
-        user_goods_item: {data: {user_id: "\$user_id"}}
+        title: \$title,
+        last_updated_user_id: \$user_id,
+        description: \$description,
+        user_goods_items: {data: {user_id: \$user_id}}
       }
     ) {
       returning {
         id
         goods_item_id
+      }
+    }
+  }
+''';
+
+String addGoodsItem = '''
+  mutation AddGoodsItem (\$title: String, \$description: String, \$goods_item_id: uuid, \$is_directory: Boolean, \$user_id: uuid) {
+    insert_goods_item(
+      objects: {
+        title: \$title,
+        description: \$description,
+        goods_item_id: \$goods_item_id,
+        last_updated_user_id: \$user_id,
+        is_directory: \$is_directory
+      }
+    ) {
+      returning {
+        id
+        is_finished
+        is_directory
+        title
+        description
+        created_at
+        updated_at
       }
     }
   }

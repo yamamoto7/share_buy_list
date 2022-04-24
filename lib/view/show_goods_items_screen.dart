@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
+import 'package:share_buy_list/view/components/add_goods_item_modal.dart';
 import 'package:share_buy_list/view/components/goods_items_view.dart';
 
 class ShowGoodsItemsScreen extends StatefulWidget {
@@ -105,9 +106,10 @@ class _ShowGoodsItemsScreenState extends State<ShowGoodsItemsScreen>
           children: <Widget>[
             getMainListViewUI(),
             getAppBarUI(),
-            // BottomBarView(
-            // goodsItemData: widget.todoItem,
-            // isAddableTodoGroup: widget.isAddableTodoGroup)
+            AddGoodsItemModal(
+                animationController: animationController,
+                goodsItemData: widget.goodsItem,
+                isDirAddable: true)
           ],
         ),
       ),

@@ -105,7 +105,6 @@ class _GoodsItemViewState extends State<GoodsItemView>
                 onCompleted: (dynamic resultData) {},
               ),
               builder: (runMutation, result) {
-                print(result);
                 return GestureDetector(
                     onTap: () {
                       if (goodsItemData.isFinished == true) {
