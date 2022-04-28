@@ -1,0 +1,1 @@
+lib/config/env_secret.dart filter=git-crypt diff=git-crypt
