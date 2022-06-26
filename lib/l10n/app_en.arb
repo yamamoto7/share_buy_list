@@ -1,0 +1,34 @@
+{
+    "title": "Share Buy",
+    "listName": "List name",
+    "description": "Description",
+    "createNew": "Create",
+    "create": "Create",
+    "cancel": "Cancel",
+    "join": "Join the list",
+    "name": "Name",
+    "memo": "Memo",
+    "item": "Item",
+    "folder": "Folder",
+    "textJoinList": "* You can join lists created by other users.",
+    "textGetID": "* Please get the ID of the list and enter it.",
+    "textNameChange": "* Names can be changed later.",
+    "textAddUser": "* Users can be added after creation.",
+    "textMaxDepthNotion": "Folder depth is limited to {depth} layers.",
+    "@textMaxDepthNotion": {
+        "placeholders": {
+            "depth": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "setting": "Setting",
+    "settingAccount": "Account",
+    "settingUserName": "User name",
+    "settingLanguage": "Language",
+    "settingContact": "Contact us",
+    "settingDarkMode": "Dark mode",
+    "settingAbout": "About this app",
+    "settingAboutDescription": ""
+}

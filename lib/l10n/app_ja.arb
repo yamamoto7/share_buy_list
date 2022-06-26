@@ -1,0 +1,34 @@
+{
+    "title": "Share Buy",
+    "listName": "リスト名",
+    "description": "説明",
+    "createNew": "新規作成",
+    "create": "作成",
+    "cancel": "キャンセル",
+    "join": "リストに参加",
+    "name": "名前",
+    "memo": "メモ",
+    "item": "アイテム",
+    "folder": "フォルダ",
+    "textJoinList": "※ 他のユーザーが作成したリストに参加します。",
+    "textGetID": "※ リストのIDを共有してもらい、入力してください。",
+    "textNameChange": "※ 名前は後から変更できます",
+    "textAddUser": "※ ユーザーの追加は作成後に行えます",
+    "textMaxDepthNotion": "現在フォルダの深さは{depth}層までに制限されています。",
+    "@textMaxDepthNotion": {
+        "placeholders": {
+            "depth": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "setting": "設定",
+    "settingAccount": "アカウント設定",
+    "settingUserName": "ユーザー名",
+    "settingLanguage": "言語(Language)",
+    "settingContact": "お問い合わせ",
+    "settingDarkMode": "ダークモード",
+    "settingAbout": "このアプリについて",
+    "settingAboutDescription": ""
+}
