@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -77,10 +78,10 @@ class _StartWidgetState extends State<StartWidget> {
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (BuildContext context) =>
-            AppHomeScreen(isFirstAccess: false, tab: 0),
+            const AppHomeScreen(isFirstAccess: false, tab: 0),
         '/config': (BuildContext context) =>
-            AppHomeScreen(isFirstAccess: false, tab: 1),
-        '/web': (BuildContext context) => WebView(initialUrl: ''),
+            const AppHomeScreen(isFirstAccess: false, tab: 1),
+        '/web': (BuildContext context) => const WebView(initialUrl: ''),
       },
       localizationsDelegates: const [
         L10n.delegate,

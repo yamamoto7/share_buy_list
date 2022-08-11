@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:share_buy_list/config/config.dart';
@@ -40,12 +41,12 @@ class _ConfigScreenState extends State<ConfigScreen> {
                 SettingsTile.navigation(
                   onPressed: (_) {},
                   title: Text(L10n.of(context)!.settingUserName),
-                  value: Text('hogehgoe'),
+                  value: const Text('hogehgoe'),
                 ),
               ],
             ),
             SettingsSection(
-              title: Text('UI setting'),
+              title: const Text('UI setting'),
               tiles: [
                 SettingsTile.navigation(
                     onPressed: (_) {},
@@ -63,7 +64,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
               ],
             ),
             SettingsSection(
-              title: Text('Information'),
+              title: const Text('Information'),
               tiles: [
                 SettingsTile.navigation(
                   title: Text(L10n.of(context)!.settingContact),

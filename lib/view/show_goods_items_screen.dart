@@ -30,17 +30,16 @@ class _ShowGoodsItemsScreenState extends State<ShowGoodsItemsScreen>
 
   List<Widget> listViews = <Widget>[];
   final ScrollController scrollController = ScrollController();
-  double topBarOpacity = 0.0;
+  double topBarOpacity = 0;
   bool isAddableTodoItem = true;
 
   @override
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
-    topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-            parent: animationController,
-            curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+    topBarAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
 
     listViews = <Widget>[
       GoodsItemsView(
@@ -137,19 +136,19 @@ class _ShowGoodsItemsScreenState extends State<ShowGoodsItemsScreen>
                 opacity: topBarAnimation,
                 child: Transform(
                     transform: Matrix4.translationValues(
-                        0.0, 30 * (1.0 - topBarAnimation.value), 0.0),
+                        0, 30 * (1.0 - topBarAnimation.value), 0),
                     child: DecoratedBox(
                         decoration: BoxDecoration(
                           color: AppTheme.white.withOpacity(topBarOpacity),
                           borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(32.0),
+                            bottomLeft: Radius.circular(32),
                           ),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
                                 color: AppTheme.mainColorDark
                                     .withOpacity(0.4 * topBarOpacity),
                                 offset: const Offset(1.1, 1.1),
-                                blurRadius: 10.0),
+                                blurRadius: 10),
                           ],
                         ),
                         child: Column(children: <Widget>[
@@ -174,7 +173,7 @@ class _ShowGoodsItemsScreenState extends State<ShowGoodsItemsScreen>
                                         }),
                                     Expanded(
                                         child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(8),
                                             child: Text(widget.goodsItem.title,
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(

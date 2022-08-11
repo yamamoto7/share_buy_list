@@ -12,7 +12,7 @@ class Config {
   static late bool darkmode;
   static late ThemeMode themeMode;
 
-  static Future hoge() async {
+  static Future<void> hoge() async {
     prefs = await SharedPreferences.getInstance();
 
     var isFirstAccess = prefs.getBool('isFirstAccess') ?? true;

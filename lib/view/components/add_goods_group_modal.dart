@@ -1,6 +1,5 @@
-// [TODO] 未着手
-
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/config/app_theme.dart';
