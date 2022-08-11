@@ -1,4 +1,4 @@
-name: Deploy Android App
+name: Deploy App
 
 on:
   push:
@@ -33,9 +33,95 @@ jobs:
       - name: flutter analyze
         run: flutter analyze
 
-  build:
-    name: build
-    needs: [lint]
+  build_ios:
+    # iOS の ipa を生成したいので macOS で実行する
+    runs-on: macos-latest
+    steps:
+      - name: set up repository
+        uses: actions/checkout@v2
+      - name: unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.CRYPT_PUB_KEY }}
+      # ProvisioningProfile をシークレットから取り出して、プロジェクトに無理やりセットする
+      - name: Import Provisioning Profile
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo '${{ secrets.PROVISIONING_PROFILE }}' | openssl base64 -d -out ~/Library/MobileDevice/Provisioning\ Profiles/decoded.mobileprovision
+
+      # 証明書を設定
+      - name: Import Code-Signing Certificates
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+
+      # Flutter コマンド！
+      - name: Flutter action
+        uses: subosito/flutter-action@v1.3.0
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build ios
+      - run: flutter build apk    # この時点で Android モジュールは作成完了
+
+      # Xcode で Archive
+      - name: iOS Build Action
+        uses: yukiarrr/ios-build-action@v0.5.0
+        with:
+          project-path: ios/Runner.xcodeproj
+          p12-base64: ${{ secrets.CERTIFICATES_P12 }}
+          mobileprovision-base64: ${{ secrets.PROVISIONING_PROFILE }}
+          code-signing-identity: iOS Distribution
+          team-id: ${{ secrets.APPLE_TEAM_ID }}
+          workspace-path: ios/Runner.xcworkspace
+          export-method: development
+          certificate-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+          output-path: app-release.ipa
+
+      # デプロイは Ubuntu で行うため、一度モジュールをアップロードする
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: ios
+          path: app-release.ipa
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: android
+          path: build/app/outputs/apk/release/app-release.apk
+
+  deploy_ios:
+    needs: [build_ios]
+    # 2020/04 時点
+    # Firebase-Distribution-Github-Action が macOS 未対応のため Ubuntu で実行する
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: set up repository
+        uses: actions/checkout@v2
+      - name: unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.CRYPT_PUB_KEY }}
+
+      - name: Download artifact
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: ios
+
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID_IOS}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          file: ios/app-release.ipa
+          groups: primary_testers
+
+  build_android:
+    name: build android
+    needs: [deploy_ios]
     runs-on: ubuntu-latest
 
     steps:
@@ -74,9 +160,9 @@ jobs:
           name: android
           path: build/app/outputs/flutter-apk/app-release.apk
 
-  deploy:
-    name: deploy
-    needs: [build]
+  deploy_android:
+    name: deploy android
+    needs: [build_android]
     runs-on: ubuntu-latest
     steps:
 
@@ -100,3 +186,4 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           file: android/app-release.apk
           groups: primary_testers
+
