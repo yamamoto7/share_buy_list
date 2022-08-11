@@ -1,52 +1,10 @@
 PODS:
-  - Amplify (1.25.0):
-    - Amplify/Default (= 1.25.0)
-  - Amplify/Default (1.25.0)
-  - amplify_auth_cognito_ios (0.0.1):
-    - Amplify (= 1.25.0)
-    - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.25.0)
-    - Flutter
-    - ObjectMapper
-  - amplify_core (0.0.1):
-    - Flutter
-    - SwiftFormat/CLI
-    - SwiftLint
-  - amplify_flutter_ios (0.0.1):
-    - Amplify (= 1.25.0)
-    - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.25.0)
-    - AWSPluginsCore (= 1.25.0)
-    - Flutter
-    - SwiftFormat/CLI
-    - SwiftLint
-  - AmplifyPlugins/AWSCognitoAuthPlugin (1.25.0):
-    - AWSAuthCore (~> 2.27.0)
-    - AWSCognitoIdentityProvider (~> 2.27.0)
-    - AWSCognitoIdentityProviderASF (~> 2.27.0)
-    - AWSCore (~> 2.27.0)
-    - AWSMobileClient (~> 2.27.0)
-    - AWSPluginsCore (= 1.25.0)
-  - AWSAuthCore (2.27.13):
-    - AWSCore (= 2.27.13)
-  - AWSCognitoIdentityProvider (2.27.13):
-    - AWSCognitoIdentityProviderASF (= 2.27.13)
-    - AWSCore (= 2.27.13)
-  - AWSCognitoIdentityProviderASF (2.27.13):
-    - AWSCore (= 2.27.13)
-  - AWSCore (2.27.13)
-  - AWSMobileClient (2.27.13):
-    - AWSAuthCore (= 2.27.13)
-    - AWSCognitoIdentityProvider (= 2.27.13)
-    - AWSCognitoIdentityProviderASF (= 2.27.13)
-    - AWSCore (= 2.27.13)
-  - AWSPluginsCore (1.25.0):
-    - Amplify (= 1.25.0)
-    - AWSCore (~> 2.27.0)
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
   - Flutter (1.0.0)
+  - flutter_native_splash (0.0.1):
+    - Flutter
   - Google-Mobile-Ads-SDK (8.13.0):
     - GoogleAppMeasurement (< 9.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
@@ -96,24 +54,19 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - ObjectMapper (4.2.0)
   - path_provider_ios (0.0.1):
     - Flutter
   - PromisesObjC (2.0.0)
   - ReachabilitySwift (5.0.0)
   - shared_preferences_ios (0.0.1):
     - Flutter
-  - SwiftFormat/CLI (0.49.14)
-  - SwiftLint (0.48.0)
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - amplify_auth_cognito_ios (from `.symlinks/plugins/amplify_auth_cognito_ios/ios`)
-  - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
-  - amplify_flutter_ios (from `.symlinks/plugins/amplify_flutter_ios/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
@@ -121,36 +74,21 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Amplify
-    - AmplifyPlugins
-    - AWSAuthCore
-    - AWSCognitoIdentityProvider
-    - AWSCognitoIdentityProviderASF
-    - AWSCore
-    - AWSMobileClient
-    - AWSPluginsCore
     - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleUserMessagingPlatform
     - GoogleUtilities
     - nanopb
-    - ObjectMapper
     - PromisesObjC
     - ReachabilitySwift
-    - SwiftFormat
-    - SwiftLint
 
 EXTERNAL SOURCES:
-  amplify_auth_cognito_ios:
-    :path: ".symlinks/plugins/amplify_auth_cognito_ios/ios"
-  amplify_core:
-    :path: ".symlinks/plugins/amplify_core/ios"
-  amplify_flutter_ios:
-    :path: ".symlinks/plugins/amplify_flutter_ios/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
     :path: Flutter
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
   google_mobile_ads:
     :path: ".symlinks/plugins/google_mobile_ads/ios"
   path_provider_ios:
@@ -161,32 +99,19 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
-  Amplify: 4e1839747f51c5f28f95ce36ef6d356f032b42b7
-  amplify_auth_cognito_ios: 8a014f5d5e085265e13a270dc03fbe0818bb1f54
-  amplify_core: e67fe0c53845db08aced670bfc7370b1329d2798
-  amplify_flutter_ios: 59c43b6b6ff6ccfc59e18eef279d9d6b8fef8cca
-  AmplifyPlugins: 110388250aeaf45eaf3008991616be84b2c605f7
-  AWSAuthCore: 9898614783bd6375742b58a1df38c6a8b8276eda
-  AWSCognitoIdentityProvider: c105df15533a029230c325acd2be60ff45e8f3f9
-  AWSCognitoIdentityProviderASF: e0f40ef2f5c2c357b77553144e8f41a6c0b0b81b
-  AWSCore: 05edadb5f3d0b92a50ea8c66b06f1a10477878da
-  AWSMobileClient: a49361347ff5c0cff946b3f777936c0fdf9c190d
-  AWSPluginsCore: c29c4b91c4ecd7376b85288615bb482f409a0b73
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   Google-Mobile-Ads-SDK: 05e5d68bb42a61b2e5bef336a52789785605aa22
   google_mobile_ads: 36eaaacc5c08ca2b9c4878232ab98152b11805cc
   GoogleAppMeasurement: ae033c3aad67e68294369373056b4d74cc8ae0d6
   GoogleUserMessagingPlatform: ab890ce5f6620f293a21b6bdd82e416a2c73aeca
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
-  SwiftFormat: 09cc5eb67ae49356c4ad9a2be6a0d5a4212b61bb
-  SwiftLint: 284cea64b6187c5d6bd83e9a548a64104d546447
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
 PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d

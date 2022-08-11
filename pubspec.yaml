@@ -15,6 +15,7 @@ dependencies:
   flutter_launcher_icons: ^0.10.0
   flutter_localizations:
     sdk: flutter
+  flutter_native_splash: ^2.1.6
   flutter_slidable: ^1.2.0
   google_mobile_ads: ^1.2.0
   graphql_flutter: ^5.0.1
@@ -44,3 +45,7 @@ flutter_icons:
   image_path: "assets/images/icon.png"
   android: true
   ios: true
+
+flutter_native_splash:
+  image: "assets/images/splash.png" 
+  color: "2A383D"
