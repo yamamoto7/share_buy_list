@@ -23,12 +23,17 @@
             }
         }
     },
+    "initFirstTitle": "ダウンロードいただき\nありがとうございます",
+    "initSettingTitle": "設定",
     "setting": "設定",
     "settingAccount": "アカウント設定",
     "settingUserName": "ユーザー名",
     "settingLanguage": "言語(Language)",
+    "settingShowInit": "welcomeスクリーンを見る",
     "settingContact": "お問い合わせ",
     "settingDarkMode": "ダークモード",
     "settingAbout": "このアプリについて",
-    "settingAboutDescription": ""
+    "settingAboutDescription": "",
+    "introSelectlangTitle": "言語を選択してください",
+    "introLastTitle": "さあ始めましょう"
 }

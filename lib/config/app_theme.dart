@@ -5,6 +5,7 @@ class AppTheme {
   // tmp
   static const Color colorTMPDark = Color(0xFF2A383D);
   static const Color colorTMPlight = Color(0xFF4E626B);
+  // #6F97B1
 
   // Basic App Theme
   static const Color background = Color(0xFFF2F2F2);
@@ -39,6 +40,10 @@ class AppTheme {
 
   // Color For Form
   static const Color formBorderColor = Color(0xFF3A5160);
+
+  // Color For Button
+  static const Color buttonCancelBorder = Color.fromARGB(255, 165, 39, 17);
+  static const Color buttonEditBorder = Color.fromARGB(255, 18, 90, 138);
 
   // Color Utils
   static const Color white = Color(0xFFFFFFFF);

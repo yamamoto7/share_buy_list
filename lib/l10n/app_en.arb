@@ -23,12 +23,17 @@
             }
         }
     },
+    "initFirstTitle": "WELCOME",
+    "initSettingTitle": "Setting",
     "setting": "Setting",
     "settingAccount": "Account",
     "settingUserName": "User name",
     "settingLanguage": "Language",
+    "settingShowInit": "Show welcome screen",
     "settingContact": "Contact us",
     "settingDarkMode": "Dark mode",
     "settingAbout": "About this app",
-    "settingAboutDescription": ""
+    "settingAboutDescription": "",
+    "introSelectlangTitle": "Select your language",
+    "introLastTitle": "Let's start!"
 }
