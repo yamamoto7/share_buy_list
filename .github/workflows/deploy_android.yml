@@ -45,26 +45,25 @@ jobs:
         with:
           GIT_CRYPT_KEY: ${{ secrets.CRYPT_PUB_KEY }}
 
-      # ProvisioningProfile をシークレットから取り出して、プロジェクトに無理やりセットする
       - name: Import Provisioning Profile
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           echo '${{ secrets.PROVISIONING_PROFILE }}' | openssl base64 -d -out ~/Library/MobileDevice/Provisioning\ Profiles/decoded.mobileprovision
 
-      # 証明書を設定
       - name: Import Code-Signing Certificates
         uses: Apple-Actions/import-codesign-certs@v1
         with:
           p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
           p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
-      # Flutter コマンド！
-      - name: Flutter action
-        uses: subosito/flutter-action@v1.3.0
+      - name: install flutter
+        uses: subosito/flutter-action@v2.3.0
+        with:
+          flutter-version: '2.10.2'
+          channel: 'stable'
+
       - run: flutter pub get
-      - run: flutter test
       - run: flutter build ios
-      - run: flutter build apk    # この時点で Android モジュールは作成完了
 
       # Xcode で Archive
       - name: iOS Build Action
