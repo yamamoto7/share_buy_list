@@ -1,6 +1,7 @@
 // [TODO] 未着手
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/size_config.dart';
@@ -21,26 +22,33 @@ class AddGoodsGroupModal extends StatefulWidget {
 
 class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
     with TickerProviderStateMixin {
-  final List<Widget> _selectItems = [
-    const Tab(text: '新規作成'),
-    const Tab(text: 'リストに参加')
-  ];
+  late List<Widget> _selectItems;
   TabController? _tabController;
 
   late TextEditingController _todoTitleController;
   late TextEditingController _todoDescController;
   late List<Widget> _modalWidgetList;
   late List<Widget> _modalWidgetListJoinList;
+
   @override
   void initState() {
     _todoTitleController = TextEditingController(text: '');
     _todoDescController = TextEditingController(text: '');
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _selectItems = [
+      Tab(text: L10n.of(context)!.createNew),
+      Tab(text: L10n.of(context)!.join),
+    ];
 
     // TabControllerの初期化
     _tabController = TabController(length: _selectItems.length, vsync: this);
     _modalWidgetList = getModalWidgetList(context);
     _modalWidgetListJoinList = getModalWidgetListJoinList(context);
-    super.initState();
   }
 
   @override
@@ -104,9 +112,9 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
   List<Widget> getModalWidgetListJoinList(BuildContext context) {
     return <Widget>[
       const SizedBox(height: 20),
-      const Text('※ 他のユーザーが作成したリストに参加します。',
+      Text(L10n.of(context)!.textJoinList,
           textAlign: TextAlign.left, style: AppTheme.cardTextDarkSmaller),
-      const Text('※ リストのIDを共有してもらい、以下入力してください。',
+      Text(L10n.of(context)!.textGetID,
           textAlign: TextAlign.left, style: AppTheme.cardTextDarkSmaller),
       const SizedBox(height: 14),
       SizedBox(
@@ -120,7 +128,7 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
             // Navigator.pop(context, 1);
             Navigator.of(context).pushReplacementNamed('/');
           },
-          child: const Text('キャンセル'),
+          child: Text(L10n.of(context)!.cancel),
         ),
       ),
     ];
@@ -129,14 +137,18 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
   List<Widget> getModalWidgetList(BuildContext context) {
     return <Widget>[
       const SizedBox(height: 20),
-      const Text('※ 名前は後から変更できます',
+      Text(L10n.of(context)!.textNameChange,
           textAlign: TextAlign.left, style: AppTheme.cardTextDarkSmaller),
-      const Text('※ ユーザーの追加は作成後に行えます',
+      Text(L10n.of(context)!.textAddUser,
           textAlign: TextAlign.left, style: AppTheme.cardTextDarkSmaller),
       const SizedBox(height: 14),
-      Container(child: AppTheme.getInputForm(_todoTitleController, 'リストの名前')),
+      Container(
+          child: AppTheme.getInputForm(
+              _todoTitleController, L10n.of(context)!.listName)),
       const SizedBox(height: 8),
-      Container(child: AppTheme.getInputArea(_todoDescController, 'メモ')),
+      Container(
+          child: AppTheme.getInputArea(
+              _todoDescController, L10n.of(context)!.description)),
       const SizedBox(height: 20),
       Mutation<dynamic>(
         options: MutationOptions<dynamic>(
@@ -169,7 +181,7 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
                 });
                 // Navigator.pop(context, 1);
               },
-              child: const Text('作成'),
+              child: Text(L10n.of(context)!.create),
             ),
           );
         },
@@ -185,7 +197,7 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
           onPressed: () {
             Navigator.of(context).pushReplacementNamed('/');
           },
-          child: const Text('キャンセル'),
+          child: Text(L10n.of(context)!.cancel),
         ),
       ),
     ];

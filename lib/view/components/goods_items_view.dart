@@ -40,6 +40,7 @@ class _GoodsItemsViewState extends State<GoodsItemsView>
   Widget build(BuildContext context) {
     return Subscription<Widget>(
         options: SubscriptionOptions(
+          fetchPolicy: FetchPolicy.cacheAndNetwork,
           document: gql(fetchGoodsItems(_goodsItem.id)),
         ),
         onSubscriptionResult: (subscriptionResult, client) {},

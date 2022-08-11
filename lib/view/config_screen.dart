@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:settings_ui/settings_ui.dart';
-import 'package:share_buy_list/config/app_theme.dart';
-import 'package:share_buy_list/config/config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:settings_ui/settings_ui.dart';
+import 'package:share_buy_list/config/config.dart';
 import 'package:share_buy_list/view/webview_screen.dart';
 
 class ConfigScreen extends StatefulWidget {

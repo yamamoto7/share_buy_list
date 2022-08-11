@@ -30,6 +30,14 @@ class _GoodsItemViewState extends State<GoodsItemView>
     super.initState();
   }
 
+  void pressEditButton() {
+    print(1);
+  }
+
+  void pressRemoveButton() {
+    print(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return getSlidableCard(context, widget.goodsItemData);
@@ -39,11 +47,44 @@ class _GoodsItemViewState extends State<GoodsItemView>
     final isDir = widget.goodsItemData.isDirectory;
     return Slidable(
       key: ValueKey(widget.goodsItemData.id),
-      endActionPane: const ActionPane(
-        motion: ScrollMotion(),
-        children: [
-          Text('hoge'),
-          Text('fuga'),
+      closeOnScroll: false,
+      endActionPane: ActionPane(
+        dismissible: DismissiblePane(onDismissed: () {}),
+        dragDismissible: false,
+        motion: const ScrollMotion(),
+        children: <Widget>[
+          const SizedBox(width: 8),
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.only(
+                  top: 12, right: 24, left: 24, bottom: 12),
+              textStyle: AppTheme.bodyTextSmaller,
+              primary: AppTheme.buttonEditBorder,
+              side:
+                  const BorderSide(width: 1, color: AppTheme.buttonEditBorder),
+            ),
+            onPressed: () async {
+              pressEditButton();
+              Navigator.pop(context, 1);
+            },
+            child: const Text('編集'),
+          ),
+          const SizedBox(width: 8),
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.only(
+                  top: 12, right: 24, left: 24, bottom: 12),
+              textStyle: AppTheme.bodyTextSmaller,
+              primary: AppTheme.buttonCancelBorder,
+              side: const BorderSide(
+                  width: 1, color: AppTheme.buttonCancelBorder),
+            ),
+            onPressed: () async {
+              pressRemoveButton();
+              Navigator.pop(context, 1);
+            },
+            child: const Text('削除'),
+          )
         ],
       ),
       child: isDir

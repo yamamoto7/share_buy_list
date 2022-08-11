@@ -1,8 +1,3 @@
-// import 'package:share_buy_list/ui_view/todo_items_view.dart';
-// import 'package:share_buy_list/model/todo_item_data.dart';
-// import 'package:share_buy_list/view/layout/footer.dart';
-// ignore_for_file: prefer_int_literals
-
 import 'package:flutter/material.dart';
 import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';

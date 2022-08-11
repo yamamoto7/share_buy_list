@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/env.dart';
@@ -9,6 +10,8 @@ import 'package:share_buy_list/service/utils.dart';
 import 'package:share_buy_list/view/components/add_goods_group_modal.dart';
 import 'package:share_buy_list/view/components/goods_group_card.dart';
 import 'package:share_buy_list/view/components/loading.dart';
+
+import '../config/size_config.dart';
 
 class ShowGoodsGroupItemsScreen extends StatefulWidget {
   const ShowGoodsGroupItemsScreen(
@@ -38,47 +41,61 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: AppTheme.background,
-        body: Stack(children: <Widget>[getGroupCardList()]));
+    return getGroupCardList();
   }
 
   Widget getGroupCardList() {
-    return Query<dynamic>(
-        options: QueryOptions<dynamic>(
-            document: gql(fetchUserGoodsItems(UserConfig.userID)),
-            fetchPolicy: FetchPolicy.noCache),
-        builder: (QueryResult<dynamic> result,
-            {VoidCallback? refetch, FetchMore<dynamic>? fetchMore}) {
-          if (result.hasException) {
-            print(UserConfig.userID);
-            return Text(result.exception.toString());
-          }
-          if (result.isLoading) {
-            return const Center(child: ColorLoader(radius: 15, dotRadius: 3));
-          }
+    return Stack(children: <Widget>[
+      Query<dynamic>(
+          options: QueryOptions<dynamic>(
+              document: gql(fetchUserGoodsItems(UserConfig.userID)),
+              fetchPolicy: FetchPolicy.noCache),
+          builder: (QueryResult<dynamic> result,
+              {VoidCallback? refetch, FetchMore<dynamic>? fetchMore}) {
+            Widget childWidget;
+            final listPadding = EdgeInsets.only(
+              top: AppBar().preferredSize.height +
+                  MediaQuery.of(context).padding.top +
+                  24,
+              bottom: 62 + MediaQuery.of(context).padding.bottom,
+              left: 16,
+              right: 16,
+            );
 
-          if (result.data is! Map<String, dynamic> &&
-              !result.data!.containsKey('user_goods_item')) {
-            return const Center(child: ColorLoader(radius: 15, dotRadius: 3));
-          }
+            if (result.hasException) {
+              // Error occured
+              print('exeption');
+              print(result.exception.toString());
+              childWidget = ListView(padding: listPadding, children: [
+                Container(
+                  width: SizeConfig.screenWidth,
+                  color: Colors.blue,
+                  child: Text(L10n.of(context)!.introSelectlangTitle),
+                ),
+                Container(
+                  width: SizeConfig.screenWidth,
+                  color: Colors.red,
+                  child: Text(L10n.of(context)!.introSelectlangTitle),
+                )
+              ]);
+              // childWidget = Text(result.exception.toString());
+            } else if (result.isLoading) {
+              // Now loading
+              childWidget =
+                  const Center(child: ColorLoader(radius: 15, dotRadius: 3));
+            } else if (result.data is! Map<String, dynamic> &&
+                !result.data!.containsKey('user_goods_item')) {
+              childWidget =
+                  const Center(child: ColorLoader(radius: 15, dotRadius: 3));
+            } else {
+              goodsGroupList = castOrNull<List<GoodsGroupData>>(result
+                  .data!['user_goods_item']
+                  .map<GoodsGroupData>(
+                      (dynamic i) => GoodsGroupData.fromJson(i?['goods_item']))
+                  .toList())!;
 
-          goodsGroupList = castOrNull<List<GoodsGroupData>>(result
-              .data!['user_goods_item']
-              .map<GoodsGroupData>(
-                  (dynamic i) => GoodsGroupData.fromJson(i?['goods_item']))
-              .toList())!;
-
-          return Scrollbar(
-              child: ListView.builder(
-                  padding: EdgeInsets.only(
-                    top: AppBar().preferredSize.height +
-                        MediaQuery.of(context).padding.top +
-                        24,
-                    bottom: 62 + MediaQuery.of(context).padding.bottom,
-                    left: 16,
-                    right: 16,
-                  ),
+              childWidget = ListView.builder(
+                  padding: listPadding,
                   itemCount: goodsGroupList.length + 1,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (BuildContext context, int index) {
@@ -96,7 +113,16 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
                       return goodsGroupCard(context, goodsGroupList[index],
                           widget.openGoodsItem, refetch);
                     }
-                  }));
-        });
+                  });
+            }
+
+            return Scrollbar(
+                child: RefreshIndicator(
+                    onRefresh: () async {
+                      refetch!();
+                    },
+                    child: childWidget));
+          })
+    ]);
   }
 }

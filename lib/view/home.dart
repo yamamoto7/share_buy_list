@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,7 +13,12 @@ import 'package:share_buy_list/view/show_goods_group_items_screen.dart';
 import 'package:share_buy_list/view/show_goods_items_screen.dart';
 
 class AppHomeScreen extends StatefulWidget {
-  const AppHomeScreen({Key? key}) : super(key: key);
+  const AppHomeScreen(
+      {Key? key, required this.isFirstAccess, required this.tab})
+      : super(key: key);
+
+  final bool isFirstAccess;
+  final int tab;
 
   @override
   _AppHomeScreenState createState() => _AppHomeScreenState();
@@ -28,13 +34,15 @@ class _AppHomeScreenState extends State<AppHomeScreen>
 
   @override
   void initState() {
-    _controller = PersistentTabController(initialIndex: 0);
-    adWidget = AdWidget(ad: homeBannerAd);
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
+    if (!widget.isFirstAccess) {
+      _controller = PersistentTabController(initialIndex: 0);
+      adWidget = AdWidget(ad: homeBannerAd);
+      animationController = AnimationController(
+          duration: const Duration(milliseconds: 600), vsync: this);
 
+      animationController.forward();
+    }
     super.initState();
-    animationController.forward();
   }
 
   @override
@@ -45,7 +53,6 @@ class _AppHomeScreenState extends State<AppHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    // init
     SizeConfig().init(context);
     return Stack(children: [
       PersistentTabView(context,

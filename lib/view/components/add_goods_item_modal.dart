@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/env.dart';
@@ -27,10 +28,7 @@ class AddGoodsItemModal extends StatefulWidget {
 
 class _AddTodoItemModalState extends State<AddGoodsItemModal>
     with TickerProviderStateMixin {
-  List<Widget> _selectItems = [
-    const Tab(text: 'アイテム'),
-    const Tab(text: 'フォルダ')
-  ];
+  late List<Widget> _selectItems;
   bool selectIsDir = false;
   TabController? _tabController;
 
@@ -42,14 +40,25 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
   void initState() {
     _todoTitleController = TextEditingController(text: '');
     _todoDescController = TextEditingController(text: '');
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     if (!widget.isDirAddable) {
-      _selectItems = [const Tab(text: 'アイテム')];
+      _selectItems = [Tab(text: L10n.of(context)!.item)];
+    } else {
+      _selectItems = [
+        Tab(text: L10n.of(context)!.item),
+        Tab(text: L10n.of(context)!.folder)
+      ];
     }
 
-    // TabControllerの初期化
     _tabController = TabController(length: _selectItems.length, vsync: this);
     _modalWidgetList = getModalWidgetList(context);
-    super.initState();
   }
 
   @override
@@ -117,9 +126,13 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
             selectIsDir = index == 1;
           }),
       const SizedBox(height: 20),
-      Container(child: AppTheme.getInputForm(_todoTitleController, '名前')),
+      Container(
+          child: AppTheme.getInputForm(
+              _todoTitleController, L10n.of(context)!.name)),
       const SizedBox(height: 8),
-      Container(child: AppTheme.getInputArea(_todoDescController, 'メモ')),
+      Container(
+          child: AppTheme.getInputArea(
+              _todoDescController, L10n.of(context)!.memo)),
       const SizedBox(height: 20),
       Mutation<Widget>(
         options: MutationOptions(
@@ -147,7 +160,7 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
                 _todoTitleController.clear();
                 _todoDescController.clear();
               },
-              child: const Text('作成'),
+              child: Text(L10n.of(context)!.create),
             ),
           );
         },
@@ -163,14 +176,14 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
           onPressed: () {
             Navigator.pop(context, 1);
           },
-          child: const Text('キャンセル'),
+          child: Text(L10n.of(context)!.cancel),
         ),
       ),
       if (!widget.isDirAddable)
-        const Padding(
-          padding: EdgeInsets.only(left: 8, top: 8),
+        Padding(
+          padding: const EdgeInsets.only(left: 8, top: 8),
           child: Text(
-              '※ 大変申し訳ございませんが、現在フォルダの階層は最大$MAX_GOODS_ITEM_DEPTH層に制限しています。\n※ ご意見・ご要望は Setting > 「お問い合わせ・ご要望」 から随時受け付けています。',
+              L10n.of(context)!.textMaxDepthNotion(MAX_GOODS_ITEM_DEPTH),
               textAlign: TextAlign.left,
               style: AppTheme.bodyTextSmaller),
         ),

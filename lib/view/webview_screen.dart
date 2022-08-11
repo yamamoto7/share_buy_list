@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:share_buy_list/config/app_theme.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:share_buy_list/config/config.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
   const WebViewScreen({Key? key, required this.title, required this.url})
