@@ -48,7 +48,7 @@ jobs:
       - name: Import Provisioning Profile
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          echo '${{ secrets.PROVISIONING_PROFILE }}' | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/decoded.mobileprovision
+          echo -n '${{ secrets.PROVISIONING_PROFILE }}' | base64 --decode --output ~/Library/MobileDevice/Provisioning\ Profiles/decoded.mobileprovision
 
       - name: Import Code-Signing Certificates
         uses: Apple-Actions/import-codesign-certs@v1
@@ -63,7 +63,10 @@ jobs:
           channel: 'stable'
 
       - run: flutter pub get
-      - run: flutter build ios
+        # - run: flutter build ios --no-codesign
+      # ipa ファイルの出力
+      - run: flutter build ipa --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
+
 
       # Xcode で Archive
       - name: iOS Build Action
