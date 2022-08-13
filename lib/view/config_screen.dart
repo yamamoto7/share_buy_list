@@ -7,15 +7,21 @@ import 'package:share_buy_list/config/config.dart';
 import 'package:share_buy_list/view/webview_screen.dart';
 
 class ConfigScreen extends StatefulWidget {
-  const ConfigScreen({Key? key}) : super(key: key);
-
+  const ConfigScreen(
+      {Key? key, required this.setThememode, required this.setLanguage})
+      : super(key: key);
+  final Function setThememode;
+  final Function setLanguage;
   @override
   _ConfigScreenState createState() => _ConfigScreenState();
 }
 
 class _ConfigScreenState extends State<ConfigScreen> {
+  late String _selectedLanguageCode;
+
   @override
   void initState() {
+    _selectedLanguageCode = Config.currentLanguageItem.code;
     super.initState();
   }
 
@@ -49,13 +55,99 @@ class _ConfigScreenState extends State<ConfigScreen> {
               title: const Text('UI setting'),
               tiles: [
                 SettingsTile.navigation(
-                    onPressed: (_) {},
+                    onPressed: (_) {
+                      showCupertinoModalPopup<void>(
+                        context: context,
+                        builder: (context) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              DecoratedBox(
+                                decoration: const BoxDecoration(
+                                  color: Color(0xffffffff),
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Color(0xff999999),
+                                      width: 0,
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    CupertinoButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 5,
+                                      ),
+                                      child: Text(L10n.of(context)!.cancel),
+                                    ),
+                                    CupertinoButton(
+                                      onPressed: () {
+                                        print('start');
+                                        widget.setLanguage(
+                                            context,
+                                            Config
+                                                .languageItems[
+                                                    _selectedLanguageCode]!
+                                                .locale);
+                                        Config.setLanguage(
+                                            _selectedLanguageCode);
+                                        Navigator.pop(context);
+                                      },
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 5,
+                                      ),
+                                      child: Text(L10n.of(context)!.confirm),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 320,
+                                color: const Color(0xfff7f7f7),
+                                child: CupertinoPicker(
+                                  magnification: 1.22,
+                                  squeeze: 1.2,
+                                  useMagnifier: true,
+                                  itemExtent: 32,
+                                  // This is called when selected item is changed.
+                                  onSelectedItemChanged: (int selectedItem) {
+                                    setState(() {
+                                      _selectedLanguageCode =
+                                          Config.languageKeys[selectedItem]!;
+                                    });
+                                  },
+                                  children: List<Widget>.generate(
+                                      Config.languageKeys.length, (int index) {
+                                    return Center(
+                                      child: Text(
+                                        Config.languageItems[
+                                                Config.languageKeys[index]]!
+                                            .getLabel(),
+                                      ),
+                                    );
+                                  }),
+                                  /* the rest of the picker */
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
                     title: Text(L10n.of(context)!.settingLanguage),
                     value: Text(Config.getLanguageLabel())),
                 SettingsTile.switchTile(
                   onToggle: (value) {
                     setState(() {
                       Config.setDarkMode(value);
+                      widget.setThememode(context, Config.themeMode);
                     });
                   },
                   initialValue: Config.darkmode,

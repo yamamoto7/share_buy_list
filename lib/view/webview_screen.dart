@@ -33,6 +33,7 @@ class _WebViewState extends State<WebViewScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppTheme.background,
+        titleTextStyle: AppTheme.appBarText,
         iconTheme: const IconThemeData(color: AppTheme.textDark),
         toolbarHeight: 50,
         title: Text(widget.title),

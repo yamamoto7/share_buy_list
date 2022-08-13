@@ -32,6 +32,7 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
 
   @override
   void initState() {
+    print(widget.key);
     super.initState();
   }
 

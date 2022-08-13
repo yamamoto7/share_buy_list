@@ -1,9 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class LanguageItem {
+  LanguageItem(String codeVal, String labelVal, Locale localeValue) {
+    code = codeVal;
+    label = labelVal;
+    locale = localeValue;
+  }
+  late String code;
+  late String label;
+  late Locale locale;
+
+  String getCode() {
+    return code;
+  }
+
+  String getLabel() {
+    return label;
+  }
+
+  Locale getLocale() {
+    return locale;
+  }
+}
+
 class Config {
-  static const languageJa = 'ja';
-  static const languageEn = 'en';
+  static final Map<String, LanguageItem> languageItems = {
+    'en': LanguageItem('en', 'English', const Locale('en')),
+    'ja': LanguageItem('ja', '日本語', const Locale('ja'))
+  };
+  static final Map<int, String> languageKeys = {0: 'en', 1: 'ja'};
 
   void init() {}
 
@@ -11,6 +37,7 @@ class Config {
   static late SharedPreferences prefs;
   static late bool darkmode;
   static late ThemeMode themeMode;
+  static late LanguageItem currentLanguageItem;
 
   static Future<void> hoge() async {
     prefs = await SharedPreferences.getInstance();
@@ -33,35 +60,35 @@ class Config {
     } else {
       themeMode = ThemeMode.light;
     }
+
+    if (prefs.getString('languageCode') != null &&
+        languageItems.containsKey(prefs.getString('languageCode'))) {
+      currentLanguageItem = languageItems[prefs.getString('languageCode')]!;
+    } else {
+      currentLanguageItem = languageItems['en']!;
+    }
   }
 
-  static Locale getLanguageCode() {
-    return (prefs.getString('key') != null && prefs.getString('key')! == 'ja')
-        ? const Locale('ja')
-        : const Locale('en');
+  static Locale getLanguageLocale() {
+    return currentLanguageItem.getLocale();
   }
 
   static String getLanguageKey() {
-    return (prefs.getString('key') != null && prefs.getString('key')! == 'ja')
-        ? 'ja'
-        : 'en';
+    return currentLanguageItem.getCode();
   }
 
   static String getLanguageLabel() {
-    return (prefs.getString('key') != null && prefs.getString('key')! == 'ja')
-        ? '日本語'
-        : 'English';
+    return currentLanguageItem.getLabel();
   }
 
   static bool getIsFirstAccess() {
     return isFirstAccess;
   }
 
-  static bool setLanguage(String key) {
-    if (key == languageJa) {
-      prefs.setString('key', languageJa);
-    } else if (key == languageEn) {
-      prefs.setString('key', languageEn);
+  static bool setLanguage(String languageCode) {
+    if (languageItems.containsKey(languageCode)) {
+      prefs.setString('languageCode', languageCode);
+      currentLanguageItem = languageItems[prefs.getString('languageCode')]!;
     } else {
       return false;
     }

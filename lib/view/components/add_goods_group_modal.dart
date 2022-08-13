@@ -125,7 +125,7 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
               primary: AppTheme.colorTMPDark),
           onPressed: () {
             // Navigator.pop(context, 1);
-            Navigator.of(context).pushReplacementNamed('/');
+            Navigator.of(context).pop();
           },
           child: Text(L10n.of(context)!.cancel),
         ),
@@ -194,7 +194,8 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
               textStyle: const TextStyle(color: AppTheme.colorTMPDark),
               primary: AppTheme.colorTMPDark),
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/');
+            // Navigator.of(context).pushReplacementNamed('/');
+            Navigator.of(context).pop();
           },
           child: Text(L10n.of(context)!.cancel),
         ),

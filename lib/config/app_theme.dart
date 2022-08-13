@@ -49,7 +49,8 @@ class AppTheme {
   static const Color white = Color(0xFFFFFFFF);
 
   // App Body Text Theme
-  static const String fontName = 'Roboto';
+  static const String fontNameEn = 'RobotoMono';
+  static const String fontName = 'NotoSansJP';
   static const TextTheme textTheme = TextTheme(
     bodyText1: body1,
     bodyText2: body2,
@@ -57,7 +58,7 @@ class AppTheme {
 
   static const TextStyle body2 = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 12,
     letterSpacing: 0.2,
     color: textDark,
@@ -65,7 +66,7 @@ class AppTheme {
 
   static const TextStyle body1 = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 16,
     letterSpacing: -0.05,
     color: textDark,
@@ -73,8 +74,17 @@ class AppTheme {
 
   static const TextStyle bodyTextSmaller = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 16,
+    letterSpacing: -0.05,
+    color: textDark,
+  );
+
+  // App Parts Theme
+  static const TextStyle appBarText = TextStyle(
+    fontFamily: fontName,
+    fontWeight: FontWeight.w500,
+    fontSize: 14,
     letterSpacing: -0.05,
     color: textDark,
   );
@@ -82,7 +92,7 @@ class AppTheme {
   // Text Style For Card
   static const TextStyle cardTextDark = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 14,
     letterSpacing: -0.05,
     color: textDark,
@@ -90,7 +100,7 @@ class AppTheme {
 
   static const TextStyle cardTextDarkSmaller = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 12,
     letterSpacing: -0.05,
     color: textDark,
@@ -98,7 +108,7 @@ class AppTheme {
 
   static const TextStyle cardTextDarkH1 = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 16,
     letterSpacing: -0.05,
     color: textDark,
@@ -106,7 +116,7 @@ class AppTheme {
 
   static const TextStyle cardTextWhite = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 14,
     letterSpacing: -0.05,
     color: textWhite,
@@ -114,7 +124,7 @@ class AppTheme {
 
   static const TextStyle cardTextWhiteSmaller = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 12,
     letterSpacing: -0.05,
     color: textWhite,
@@ -130,7 +140,7 @@ class AppTheme {
 
   static const TextStyle goodsCardActiveTitle = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 16,
     letterSpacing: -0.05,
     color: textDark,
@@ -138,7 +148,7 @@ class AppTheme {
 
   static const TextStyle goodsCardActiveText = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 14,
     letterSpacing: -0.05,
     color: textLight,
@@ -146,7 +156,7 @@ class AppTheme {
 
   static const TextStyle goodsCardActiveDate = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 12,
     letterSpacing: 1,
     color: textExLight,
@@ -154,7 +164,7 @@ class AppTheme {
 
   static const TextStyle goodsCardDisableTitle = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 16,
     letterSpacing: -0.05,
     color: textExLight,
@@ -162,7 +172,7 @@ class AppTheme {
 
   static const TextStyle goodsCardDisableText = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 14,
     letterSpacing: -0.05,
     color: textExLight,
@@ -170,7 +180,7 @@ class AppTheme {
 
   static const TextStyle goodsCardDisableDate = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 12,
     letterSpacing: 1,
     color: textLightGray,

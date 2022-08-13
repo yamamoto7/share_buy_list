@@ -13,12 +13,17 @@ import 'package:share_buy_list/view/show_goods_items_screen.dart';
 
 class AppHomeScreen extends StatefulWidget {
   const AppHomeScreen(
-      {Key? key, required this.isFirstAccess, required this.tab})
+      {Key? key,
+      required this.isFirstAccess,
+      required this.tab,
+      required this.setThememode,
+      required this.setLanguage})
       : super(key: key);
 
   final bool isFirstAccess;
   final int tab;
-
+  final Function setThememode;
+  final Function setLanguage;
   @override
   _AppHomeScreenState createState() => _AppHomeScreenState();
 }
@@ -87,7 +92,8 @@ class _AppHomeScreenState extends State<AppHomeScreen>
     return [
       ShowGoodsGroupItemsScreen(
           setLoading: setLoading, openGoodsItem: openGoodsItem),
-      const ConfigScreen(),
+      ConfigScreen(
+          setThememode: widget.setThememode, setLanguage: widget.setLanguage),
     ];
   }
 
