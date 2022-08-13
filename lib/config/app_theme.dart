@@ -44,6 +44,8 @@ class AppTheme {
   // Color For Button
   static const Color buttonCancelBorder = Color.fromARGB(255, 165, 39, 17);
   static const Color buttonEditBorder = Color.fromARGB(255, 18, 90, 138);
+  static const Color cancelText = Color.fromARGB(255, 165, 39, 17);
+  static const Color editText = Color.fromARGB(255, 18, 90, 138);
 
   // Color Utils
   static const Color white = Color(0xFFFFFFFF);
@@ -65,6 +67,14 @@ class AppTheme {
   );
 
   static const TextStyle body1 = TextStyle(
+    fontFamily: fontName,
+    fontWeight: FontWeight.w500,
+    fontSize: 16,
+    letterSpacing: -0.05,
+    color: textDark,
+  );
+
+  static const TextStyle textStyleTmp = TextStyle(
     fontFamily: fontName,
     fontWeight: FontWeight.w500,
     fontSize: 16,
@@ -108,7 +118,7 @@ class AppTheme {
 
   static const TextStyle cardTextDarkH1 = TextStyle(
     fontFamily: fontName,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w700,
     fontSize: 16,
     letterSpacing: -0.05,
     color: textDark,

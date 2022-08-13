@@ -113,7 +113,7 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
                       }
                     } else {
                       return goodsGroupCard(context, goodsGroupList[index],
-                          widget.openGoodsItem, refetch);
+                          widget.openGoodsItem, widget.setLoading, refetch);
                     }
                   });
             }
