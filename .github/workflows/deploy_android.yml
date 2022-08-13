@@ -35,7 +35,7 @@ jobs:
 
   build_android:
     name: build android
-    needs: [lint]
+    # needs: [lint]
     runs-on: ubuntu-latest
 
     steps:
