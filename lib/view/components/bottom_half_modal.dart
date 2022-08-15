@@ -36,9 +36,6 @@ class _BottomHalfModalState extends State<BottomHalfModal>
                             child: Container(
                                 height: 480,
                                 decoration: const BoxDecoration(
-                                  //モーダル自体の色
-                                  // color: Colors.white,
-                                  //角丸にする
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(20),
                                     topRight: Radius.circular(20),

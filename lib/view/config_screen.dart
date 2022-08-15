@@ -63,11 +63,12 @@ class _ConfigScreenState extends State<ConfigScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               DecoratedBox(
-                                decoration: const BoxDecoration(
-                                  color: Color(0xffffffff),
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
                                   border: Border(
                                     bottom: BorderSide(
-                                      color: Color(0xff999999),
+                                      color: Theme.of(context).disabledColor,
                                       width: 0,
                                     ),
                                   ),
@@ -109,7 +110,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
                               ),
                               Container(
                                 height: 320,
-                                color: const Color(0xfff7f7f7),
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 child: CupertinoPicker(
                                   magnification: 1.22,
                                   squeeze: 1.2,

@@ -6,10 +6,10 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share_buy_list/config/env.dart';
 import 'package:share_buy_list/config/size_config.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
+import 'package:share_buy_list/view/components/loadingScreen.dart';
 import 'package:share_buy_list/view/config_screen.dart';
 import 'package:share_buy_list/view/show_goods_group_items_screen.dart';
 import 'package:share_buy_list/view/show_goods_items_screen.dart';
-import 'package:share_buy_list/view/components/loadingScreen.dart';
 
 class AppHomeScreen extends StatefulWidget {
   const AppHomeScreen(

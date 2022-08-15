@@ -39,7 +39,6 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
 
   @override
   void initState() {
-    _copyButtonText = 'hoge';
     _todoTitleController =
         TextEditingController(text: widget.goodsGroupData.title);
     _todoDescController =
@@ -53,6 +52,7 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
 
   @override
   Widget build(BuildContext context) {
+    _copyButtonText = L10n.of(context)!.copy;
     final _selectItems = <Widget>[
       Tab(text: L10n.of(context)!.manageUsers),
       Tab(text: L10n.of(context)!.edit)
@@ -104,9 +104,18 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
   List<Widget> getModalWidgetListAddUser(
       BuildContext context, GoodsGroupData goodsGroupData) {
     return <Widget>[
-      Text(L10n.of(context)!.userList,
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.titleMedium),
+      RichText(
+        text: TextSpan(
+          children: [
+            const WidgetSpan(child: Icon(Icons.people, size: 24)),
+            const WidgetSpan(child: SizedBox(width: 4)),
+            TextSpan(
+                text: L10n.of(context)!.userList,
+                style: Theme.of(context).textTheme.titleMedium),
+          ],
+        ),
+      ),
+      const SizedBox(height: 12),
       ListView.builder(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
@@ -119,9 +128,19 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
                   style: Theme.of(context).textTheme.bodyMedium),
             );
           }),
-      Text(L10n.of(context)!.invite,
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.titleMedium),
+      const SizedBox(height: 18),
+      RichText(
+        text: TextSpan(
+          children: [
+            const WidgetSpan(child: Icon(Icons.person_add, size: 24)),
+            const WidgetSpan(child: SizedBox(width: 4)),
+            TextSpan(
+                text: L10n.of(context)!.invite,
+                style: Theme.of(context).textTheme.titleMedium),
+          ],
+        ),
+      ),
+      const SizedBox(height: 12),
       Text(L10n.of(context)!.editGoodsGroupModalJoniUserNumLimit,
           textAlign: TextAlign.left,
           style: Theme.of(context).textTheme.bodySmall),
@@ -129,26 +148,24 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
       Container(
           child: getInputForm(
               context, _todoGroupIDController, L10n.of(context)!.listId)),
-      ElevatedButton.icon(
-        icon: const Icon(Icons.copy),
-        label: Text(_copyButtonText),
-        onPressed: () {
-          // Clipboard.setData(ClipboardData(text: _todoGroupIDController.text));
-          // setState(() {});
-          setState(() {
-            _copyButtonText = 'fuga';
-          });
-          Clipboard.setData(ClipboardData(text: _todoGroupIDController.text))
-              .then(
-            (value) {
-              setState(() {
-                _copyButtonText = 'fuga';
-              });
-            },
-          );
-        },
+      StatefulBuilder(
+        builder: (BuildContext context, setState) => ElevatedButton.icon(
+          icon: const Icon(Icons.copy),
+          label: Text(_copyButtonText),
+          onPressed: () {
+            // Clipboard.setData(ClipboardData(text: _todoGroupIDController.text));
+            // setState(() {});
+            Clipboard.setData(ClipboardData(text: _todoGroupIDController.text))
+                .then(
+              (value) {
+                setState(() {
+                  _copyButtonText = L10n.of(context)!.copied;
+                });
+              },
+            );
+          },
+        ),
       ),
-      const SizedBox(height: 24),
       SizedBox(
         height: 50,
         // リスト追加ボタン

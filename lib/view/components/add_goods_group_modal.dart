@@ -190,7 +190,7 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
     return Container(
         margin: const EdgeInsets.only(top: 8, bottom: 8),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
+          color: Theme.of(context).primaryColor,
           borderRadius: const BorderRadius.only(
             bottomRight: Radius.circular(8),
             bottomLeft: Radius.circular(8),
@@ -198,8 +198,9 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
             topRight: Radius.circular(8),
           ),
         ),
-        child: const Padding(
+        child: Padding(
             padding: EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 32),
-            child: Icon(Icons.add, size: 32, color: Colors.white)));
+            child: Icon(Icons.add,
+                size: 32, color: Theme.of(context).primaryColorLight)));
   }
 }

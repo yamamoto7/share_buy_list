@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
 import 'package:share_buy_list/view/components/goods_item_card.dart';
 import 'package:share_buy_list/view/components/loading.dart';
@@ -59,7 +61,32 @@ class _GoodsItemsViewState extends State<GoodsItemsView>
 
           // if (true) {
           if (goodsItemDataList.isEmpty) {
-            return const Text('hoge');
+            return Column(children: [
+              const SizedBox(height: 50),
+              SvgPicture.asset(
+                'assets/images/illust01.svg',
+                color: Theme.of(context).primaryColor,
+                height: 80,
+              ),
+              const SizedBox(height: 20),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                        text: L10n.of(context)!
+                            .showGoodsGroupItemsScreenAddItemLeft,
+                        style: Theme.of(context).textTheme.titleMedium),
+                    const WidgetSpan(child: SizedBox(width: 12)),
+                    const WidgetSpan(child: Icon(Icons.add_box, size: 28)),
+                    const WidgetSpan(child: SizedBox(width: 12)),
+                    TextSpan(
+                        text: L10n.of(context)!
+                            .showGoodsGroupItemsScreenAddItemRight,
+                        style: Theme.of(context).textTheme.titleMedium),
+                  ],
+                ),
+              ),
+            ]);
           } else {
             return Scrollbar(
                 child: ListView.builder(
