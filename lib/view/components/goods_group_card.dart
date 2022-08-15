@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/model/goods_group_data.dart';
-import 'package:share_buy_list/view/components/loading.dart';
 import 'package:share_buy_list/view/components/edit_goods_group_modal.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 Widget goodsGroupCard(BuildContext context, GoodsGroupData goodsGroupData,
     Function openGoodsItem, Function setLoading, VoidCallback? onRefetch) {

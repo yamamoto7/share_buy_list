@@ -42,9 +42,7 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(body: getGroupCardList()),
-    );
+    return Scaffold(body: getGroupCardList());
   }
 
   Widget getGroupCardList() {

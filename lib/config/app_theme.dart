@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 const String fontName = 'NotoSansJP';
 
 class AppStyle {
-  AppStyle(String themeName) {}
-
   final Color _primeColor = const Color(0xFF2A383D); // prime;
   final Color _backgroundColor = const Color(0xFFF2F2F2);
   final Color _editColor = const Color.fromARGB(255, 15, 59, 89);

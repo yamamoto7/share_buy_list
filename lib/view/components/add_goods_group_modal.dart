@@ -199,7 +199,8 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
           ),
         ),
         child: Padding(
-            padding: EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 32),
+            padding:
+                const EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 32),
             child: Icon(Icons.add,
                 size: 32, color: Theme.of(context).primaryColorLight)));
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
 import 'package:share_buy_list/view/components/goods_item_card.dart';
 import 'package:share_buy_list/view/components/loading.dart';

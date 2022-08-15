@@ -18,6 +18,7 @@
     "invite": "Invite",
     "edit": "Edit",
     "delete": "Delete",
+    "areYouDelete": "Do you want to delete it?",
     "setting": "Setting",
     "close": "Close",
     "update": "Update",

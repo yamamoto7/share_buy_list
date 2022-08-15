@@ -36,6 +36,7 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
   late List<Widget> _modalWidgetList;
   late List<Widget> _modalWidgetListAddUser;
   late String _copyButtonText;
+  late List<Widget> _selectItems;
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
   @override
   Widget build(BuildContext context) {
     _copyButtonText = L10n.of(context)!.copy;
-    final _selectItems = <Widget>[
+    _selectItems = <Widget>[
       Tab(text: L10n.of(context)!.manageUsers),
       Tab(text: L10n.of(context)!.edit)
     ];
@@ -62,7 +63,6 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
     _modalWidgetListAddUser =
         getModalWidgetListAddUser(context, widget.goodsGroupData);
     return BottomHalfModal(
-        child: editGoodsGroupButton(context),
         contents: Expanded(
             child: Column(children: [
           SizedBox(
@@ -98,7 +98,8 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
                       child: _modalWidgetList[index]);
                 })
           ]))
-        ])));
+        ])),
+        child: editGoodsGroupButton(context));
   }
 
   List<Widget> getModalWidgetListAddUser(
@@ -197,9 +198,7 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
           document: gql(updateGoodsGroup),
           fetchPolicy: FetchPolicy.cacheAndNetwork,
           cacheRereadPolicy: CacheRereadPolicy.mergeOptimistic,
-          update: (GraphQLDataProxy cache, QueryResult? result) {
-            return cache;
-          },
+          update: (GraphQLDataProxy cache, result) {},
           onCompleted: (dynamic resultData) {
             Navigator.pop(context, 1);
             widget.onRefetch!();
@@ -207,8 +206,8 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
           },
         ),
         builder: (
-          RunMutation runMutation,
-          QueryResult? result,
+          runMutation,
+          result,
         ) {
           return SizedBox(
             height: 50,
@@ -254,8 +253,7 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
                 await showCupertinoModalPopup<void>(
                   context: context,
                   builder: (BuildContext context) => CupertinoAlertDialog(
-                    title: const Text('Alert'),
-                    content: const Text('Proceed with destructive action?'),
+                    content: Text(L10n.of(context)!.areYouDelete),
                     actions: <CupertinoDialogAction>[
                       CupertinoDialogAction(
                         /// This parameter indicates this action is the default,
@@ -264,20 +262,19 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('No'),
+                        child: Text(L10n.of(context)!.cancel),
                       ),
                       CupertinoDialogAction(
                         isDestructiveAction: true,
                         onPressed: () async {
                           widget.setLoading(true);
                           Navigator.pop(context);
-                          dynamic result = await graphQlObject.query(
-                              deleteGoodsGroup(
-                                  goodsGroupData.myUserGoodsItemID));
+                          await graphQlObject.query(deleteGoodsGroup(
+                              goodsGroupData.myUserGoodsItemID));
                           // print(result);
                           widget.setLoading(false);
                         },
-                        child: const Text('Yes'),
+                        child: Text(L10n.of(context)!.delete),
                       )
                     ],
                   ),

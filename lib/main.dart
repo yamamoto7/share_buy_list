@@ -49,7 +49,7 @@ class _StartWidgetState extends State<StartWidget> {
   void initState() {
     language = Config.getLanguageLocale();
     themeMode = Config.themeMode;
-    appStyle = AppStyle('hoge');
+    appStyle = AppStyle();
     super.initState();
   }
 
@@ -61,8 +61,7 @@ class _StartWidgetState extends State<StartWidget> {
     });
   }
 
-  static void setThememode(
-      BuildContext context, ThemeMode value, String Themename) {
+  static void setThememode(BuildContext context, ThemeMode value) {
     final stateObject = context.findAncestorStateOfType<_StartWidgetState>();
 
     stateObject!.setState(() {

@@ -152,7 +152,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   onToggle: (value) {
                     setState(() {
                       Config.setDarkMode(value);
-                      widget.setThememode(context, Config.themeMode, '');
+                      widget.setThememode(context, Config.themeMode);
                     });
                   },
                   initialValue: Config.darkmode,
@@ -170,18 +170,16 @@ class _ConfigScreenState extends State<ConfigScreen> {
                         ?.addPostFrameCallback((_) => Navigator.push<dynamic>(
                               context,
                               MaterialPageRoute<dynamic>(
-                                builder: (BuildContext context) =>
-                                    const WebViewScreen(
-                                        title: '問い合わせ',
-                                        url:
-                                            'https://docs.google.com/forms/d/e/1FAIpQLScIq5olkqW5iIw1PdxWeNKoIx9YBvcsu6YaOOwclsPywcfEbg/viewform?usp=fb_send_twt'),
+                                builder: (BuildContext context) => WebViewScreen(
+                                    title: L10n.of(context)!.settingContact,
+                                    url:
+                                        'https://docs.google.com/forms/d/e/1FAIpQLScIq5olkqW5iIw1PdxWeNKoIx9YBvcsu6YaOOwclsPywcfEbg/viewform?usp=fb_send_twt'),
                               ),
                             ));
                   },
                 ),
                 SettingsTile.navigation(
                   title: Text(L10n.of(context)!.settingAbout),
-                  description: Text(''),
                 ),
               ],
             ),

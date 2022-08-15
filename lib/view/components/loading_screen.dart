@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:share_buy_list/view/components/loading.dart';
 
 class OverlayLoadingMolecules extends StatelessWidget {
-  OverlayLoadingMolecules({required this.visible});
+  const OverlayLoadingMolecules({Key? key, required this.visible})
+      : super(key: key);
 
   //表示状態
   final bool visible;
@@ -11,11 +11,11 @@ class OverlayLoadingMolecules extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return visible
-        ? Container(
+        ? const DecoratedBox(
             decoration: BoxDecoration(
               color: Color.fromRGBO(0, 0, 0, 0.6),
             ),
-            child: Center(child: ColorLoader(radius: 15.0, dotRadius: 3)))
+            child: Center(child: ColorLoader(radius: 15, dotRadius: 3)))
         : Container();
   }
 }

@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_int_literals
-
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class ColorLoader extends StatefulWidget {
