@@ -93,18 +93,19 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
                             curve: Curves.fastOutSlowIn)),
                     child: DecoratedBox(
                         decoration: BoxDecoration(
-                            color: AppTheme.colorTMPDark,
-                            border: Border.all(color: AppTheme.colorTMPDark),
+                            color: Theme.of(context).primaryColor,
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor),
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                  color: Colors.grey,
+                                  color: Theme.of(context).shadowColor,
                                   blurRadius: 10,
                                   spreadRadius: 1)
                             ]),
-                        child: const Icon(
+                        child: Icon(
                           Icons.add,
-                          color: AppTheme.white,
+                          color: Theme.of(context).primaryColorLight,
                           size: 30,
                         ))))));
   }
@@ -113,12 +114,11 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
     return <Widget>[
       TabBar(
           controller: _tabController,
-          indicatorColor: Colors.green,
           tabs: _selectItems,
-          labelColor: Colors.black,
+          labelColor: Theme.of(context).primaryColor,
           // add it here
           indicator: DotIndicator(
-            color: Colors.black,
+            color: Theme.of(context).primaryColor,
             distanceFromCenter: 16,
             radius: 3,
             paintingStyle: PaintingStyle.fill,
@@ -128,12 +128,12 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
           }),
       const SizedBox(height: 20),
       Container(
-          child: AppTheme.getInputForm(
-              _todoTitleController, L10n.of(context)!.name)),
+          child: getInputForm(
+              context, _todoTitleController, L10n.of(context)!.name)),
       const SizedBox(height: 8),
       Container(
-          child: AppTheme.getInputArea(
-              _todoDescController, L10n.of(context)!.memo)),
+          child: getInputArea(
+              context, _todoDescController, L10n.of(context)!.memo)),
       const SizedBox(height: 20),
       Mutation<Widget>(
         options: MutationOptions(
@@ -146,9 +146,6 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
             height: 50,
             // リスト追加ボタン
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  textStyle: const TextStyle(color: AppTheme.white),
-                  primary: AppTheme.colorTMPDark),
               onPressed: () {
                 runMutation(<String, dynamic>{
                   'title': _todoTitleController.text,
@@ -171,9 +168,6 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
         height: 50,
         // リスト追加ボタン
         child: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-              textStyle: const TextStyle(color: AppTheme.colorTMPDark),
-              primary: AppTheme.colorTMPDark),
           onPressed: () {
             Navigator.pop(context, 1);
           },
@@ -186,7 +180,7 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
           child: Text(
               L10n.of(context)!.textMaxDepthNotion(MAX_GOODS_ITEM_DEPTH),
               textAlign: TextAlign.left,
-              style: AppTheme.bodyTextSmaller),
+              style: Theme.of(context).textTheme.bodySmall),
         ),
     ];
   }

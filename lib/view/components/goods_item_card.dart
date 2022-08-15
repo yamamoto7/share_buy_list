@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_int_literals
 
-// import 'package:share_buy_list/ui_view/edit_todo_item_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
 
@@ -57,33 +56,29 @@ class _GoodsItemViewState extends State<GoodsItemView>
           OutlinedButton(
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.only(
-                  top: 12, right: 24, left: 24, bottom: 12),
-              textStyle: AppTheme.bodyTextSmaller,
-              primary: AppTheme.buttonEditBorder,
-              side:
-                  const BorderSide(width: 1, color: AppTheme.buttonEditBorder),
+                  top: 12, right: 16, left: 16, bottom: 12),
+              primary: Theme.of(context).primaryColor,
+              side: BorderSide(width: 1, color: Theme.of(context).primaryColor),
             ),
             onPressed: () async {
               pressEditButton();
               Navigator.pop(context, 1);
             },
-            child: const Text('編集'),
+            child: Text(L10n.of(context)!.edit),
           ),
           const SizedBox(width: 8),
           OutlinedButton(
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.only(
-                  top: 12, right: 24, left: 24, bottom: 12),
-              textStyle: AppTheme.bodyTextSmaller,
-              primary: AppTheme.buttonCancelBorder,
-              side: const BorderSide(
-                  width: 1, color: AppTheme.buttonCancelBorder),
+                  top: 12, right: 16, left: 16, bottom: 12),
+              primary: Theme.of(context).errorColor,
+              side: BorderSide(width: 1, color: Theme.of(context).errorColor),
             ),
             onPressed: () async {
               pressRemoveButton();
               Navigator.pop(context, 1);
             },
-            child: const Text('削除'),
+            child: Text(L10n.of(context)!.delete),
           )
         ],
       ),
@@ -102,9 +97,9 @@ class _GoodsItemViewState extends State<GoodsItemView>
             margin: const EdgeInsets.only(top: 4, bottom: 4),
             padding:
                 const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
-            decoration: const BoxDecoration(
-              color: AppTheme.cardBgColor,
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Row(children: <Widget>[
               const SizedBox(width: 20),
@@ -115,16 +110,24 @@ class _GoodsItemViewState extends State<GoodsItemView>
                       children: <Widget>[
                     Text(goodsItemData.title,
                         textAlign: TextAlign.center,
-                        style: AppTheme.cardTextWhite),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .apply(color: Theme.of(context).primaryColorLight)),
                     Container(
                         child: (goodsItemData.description.isNotEmpty)
                             ? Text(goodsItemData.description,
                                 textAlign: TextAlign.left,
-                                style: AppTheme.cardTextWhite)
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .apply(
+                                        color: Theme.of(context)
+                                            .primaryColorLight))
                             : const SizedBox(height: 0))
                   ])),
-              const Icon(Icons.navigate_next_outlined,
-                  color: AppTheme.background)
+              Icon(Icons.navigate_next_outlined,
+                  color: Theme.of(context).primaryColorLight)
             ])));
   }
 
@@ -135,8 +138,8 @@ class _GoodsItemViewState extends State<GoodsItemView>
         // 背景色（ボーダーの色）
         decoration: BoxDecoration(
             border: (goodsItemData.isFinished)
-                ? Border.all(color: AppTheme.goodsCardDisableBorderColor)
-                : Border.all(color: AppTheme.goodsCardActiveBorderColor),
+                ? Border.all(color: Theme.of(context).backgroundColor)
+                : Border.all(color: Theme.of(context).primaryColor),
             borderRadius: const BorderRadius.all(Radius.circular(8.0))),
         child: Builder(builder: (context) {
           return Mutation<Widget>(
@@ -167,12 +170,13 @@ class _GoodsItemViewState extends State<GoodsItemView>
                       }
                     },
                     child: Container(
-                        decoration: const BoxDecoration(
-                          color: AppTheme.background,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8.0)),
                         ),
                         padding: const EdgeInsets.only(
-                            top: 6, bottom: 6, left: 16, right: 16),
+                            top: 12, bottom: 12, left: 16, right: 16),
                         child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -182,20 +186,18 @@ class _GoodsItemViewState extends State<GoodsItemView>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Text(
-                                            'updated ${goodsItemData.updatedAt}',
-                                            textAlign: TextAlign.right,
-                                            style: (goodsItemData.isFinished)
-                                                ? AppTheme.goodsCardDisableDate
-                                                : AppTheme
-                                                    .goodsCardActiveDate)),
                                     Text(goodsItemData.title,
                                         textAlign: TextAlign.left,
                                         style: (goodsItemData.isFinished)
-                                            ? AppTheme.goodsCardDisableTitle
-                                            : AppTheme.goodsCardActiveTitle),
+                                            ? Theme.of(context)
+                                                .textTheme
+                                                .headlineLarge!
+                                                .apply(
+                                                    color: Theme.of(context)
+                                                        .disabledColor)
+                                            : Theme.of(context)
+                                                .textTheme
+                                                .headlineLarge),
                                     Container(
                                         child: (goodsItemData
                                                 .description.isNotEmpty)
@@ -203,20 +205,17 @@ class _GoodsItemViewState extends State<GoodsItemView>
                                                 textAlign: TextAlign.left,
                                                 style: (goodsItemData
                                                         .isFinished)
-                                                    ? AppTheme
-                                                        .goodsCardDisableText
-                                                    : AppTheme
-                                                        .goodsCardActiveText)
-                                            : const SizedBox(height: 0)),
-                                    Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Text(
-                                            'by ${goodsItemData.updatedBy}',
-                                            textAlign: TextAlign.right,
-                                            style: (goodsItemData.isFinished)
-                                                ? AppTheme.goodsCardDisableDate
-                                                : AppTheme
-                                                    .goodsCardActiveDate)),
+                                                    ? Theme.of(context)
+                                                        .textTheme
+                                                        .headlineMedium!
+                                                        .apply(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .disabledColor)
+                                                    : Theme.of(context)
+                                                        .textTheme
+                                                        .headlineMedium)
+                                            : const SizedBox(height: 2)),
                                   ]))
                             ])));
               });
@@ -230,8 +229,8 @@ class _GoodsItemViewState extends State<GoodsItemView>
       width: 20,
       decoration: BoxDecoration(
         border: isFinished
-            ? Border.all(color: AppTheme.goodsCardDisableButtonColor)
-            : Border.all(color: AppTheme.goodsCardActiveButtonColor),
+            ? Border.all(color: Theme.of(context).disabledColor)
+            : Border.all(color: Theme.of(context).primaryColor),
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
@@ -241,10 +240,10 @@ class _GoodsItemViewState extends State<GoodsItemView>
               margin: const EdgeInsets.all(2),
               height: 16,
               width: 16,
-              decoration: const BoxDecoration(
-                color: AppTheme.goodsCardDisableButtonColor,
+              decoration: BoxDecoration(
+                color: Theme.of(context).disabledColor,
                 //角丸にする
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(10),
                 ),
               ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
 import 'package:share_buy_list/view/components/add_goods_item_modal.dart';
 import 'package:share_buy_list/view/components/goods_items_view.dart';
@@ -93,7 +92,7 @@ class _ShowGoodsItemsScreenState extends State<ShowGoodsItemsScreen>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppTheme.background,
+      color: Theme.of(context).backgroundColor,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
@@ -139,13 +138,16 @@ class _ShowGoodsItemsScreenState extends State<ShowGoodsItemsScreen>
                         0, 30 * (1.0 - topBarAnimation.value), 0),
                     child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: AppTheme.white.withOpacity(topBarOpacity),
+                          color: Theme.of(context)
+                              .primaryColorLight
+                              .withOpacity(topBarOpacity),
                           borderRadius: const BorderRadius.only(
                             bottomLeft: Radius.circular(32),
                           ),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
-                                color: AppTheme.mainColorDark
+                                color: Theme.of(context)
+                                    .shadowColor
                                     .withOpacity(0.4 * topBarOpacity),
                                 offset: const Offset(1.1, 1.1),
                                 blurRadius: 10),
@@ -165,9 +167,10 @@ class _ShowGoodsItemsScreenState extends State<ShowGoodsItemsScreen>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     IconButton(
-                                        icon: const Icon(Icons.chevron_left,
-                                            size: 32,
-                                            color: AppTheme.mainColorDark),
+                                        icon: const Icon(
+                                          Icons.chevron_left,
+                                          size: 32,
+                                        ),
                                         onPressed: () {
                                           Navigator.pop(context, 1);
                                         }),
@@ -176,7 +179,9 @@ class _ShowGoodsItemsScreenState extends State<ShowGoodsItemsScreen>
                                             padding: const EdgeInsets.all(8),
                                             child: Text(widget.goodsItem.title,
                                                 textAlign: TextAlign.left,
-                                                style: AppTheme.appBarText)))
+                                                style: Theme.of(context)
+                                                    .appBarTheme
+                                                    .titleTextStyle)))
                                   ]))
                         ]))));
           })

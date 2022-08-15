@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/env.dart';
 import 'package:share_buy_list/config/user_config.dart';
 import 'package:share_buy_list/model/goods_group_data.dart';
@@ -43,7 +42,9 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return getGroupCardList();
+    return Container(
+      child: Scaffold(body: getGroupCardList()),
+    );
   }
 
   Widget getGroupCardList() {
@@ -72,15 +73,14 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
                 Container(
                   width: SizeConfig.screenWidth,
                   color: Colors.blue,
-                  child: Text(L10n.of(context)!.introSelectlangTitle),
+                  child: Text(L10n.of(context)!.edit),
                 ),
                 Container(
                   width: SizeConfig.screenWidth,
                   color: Colors.red,
-                  child: Text(L10n.of(context)!.introSelectlangTitle),
+                  child: Text(L10n.of(context)!.delete),
                 )
               ]);
-              // childWidget = Text(result.exception.toString());
             } else if (result.isLoading) {
               // Now loading
               childWidget =
@@ -92,8 +92,8 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
             } else {
               goodsGroupList = castOrNull<List<GoodsGroupData>>(result
                   .data!['user_goods_item']
-                  .map<GoodsGroupData>(
-                      (dynamic i) => GoodsGroupData.fromJson(i?['goods_item']))
+                  .map<GoodsGroupData>((dynamic i) => GoodsGroupData.fromJson(
+                      i?['goods_item'], i?['id'] as String))
                   .toList())!;
 
               childWidget = ListView.builder(
@@ -106,10 +106,11 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
                         return AddGoodsGroupModal(
                             setLoading: widget.setLoading, onRefetch: refetch);
                       } else {
-                        return const Text(
-                            '※ 大変申し訳ございませんが、現在一人のユーザーが参加できるリストを最大$MAX_GOODS_GROUP_NUM個に制限しています。\n※ ご意見・ご要望は Setting > 「お問い合わせ・ご要望」 から随時受け付けています。',
+                        return Text(
+                            L10n.of(context)!
+                                .showGoodsGroupItemsScreenGroupNumLimit,
                             textAlign: TextAlign.left,
-                            style: AppTheme.bodyTextSmaller);
+                            style: Theme.of(context).textTheme.bodySmall);
                       }
                     } else {
                       return goodsGroupCard(context, goodsGroupList[index],

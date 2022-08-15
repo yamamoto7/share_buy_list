@@ -7,7 +7,6 @@ import 'package:share_buy_list/config/size_config.dart';
 import 'package:share_buy_list/config/user_config.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
 import 'package:share_buy_list/view/components/bottom_half_modal.dart';
-import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class AddGoodsGroupModal extends StatefulWidget {
   const AddGoodsGroupModal({Key? key, required this.setLoading, this.onRefetch})
@@ -61,17 +60,7 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
                 height: 40,
                 child: TabBar(
                     controller: _tabController,
-                    indicatorColor: AppTheme.colorTMPDark,
                     tabs: _selectItems,
-                    labelColor: AppTheme.background,
-                    unselectedLabelColor: AppTheme.colorTMPDark,
-                    indicator: RectangularIndicator(
-                      color: AppTheme.colorTMPDark,
-                      topLeftRadius: 16,
-                      topRightRadius: 16,
-                      bottomLeftRadius: 16,
-                      bottomRightRadius: 16,
-                    ),
                     onTap: (int index) {})),
             const SizedBox(height: 20),
             Expanded(
@@ -112,17 +101,16 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
     return <Widget>[
       const SizedBox(height: 20),
       Text(L10n.of(context)!.textJoinList,
-          textAlign: TextAlign.left, style: AppTheme.cardTextDarkSmaller),
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.bodySmall),
       Text(L10n.of(context)!.textGetID,
-          textAlign: TextAlign.left, style: AppTheme.cardTextDarkSmaller),
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.bodySmall),
       const SizedBox(height: 14),
       SizedBox(
         height: 50,
         // リスト追加ボタン
         child: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-              textStyle: const TextStyle(color: AppTheme.colorTMPDark),
-              primary: AppTheme.colorTMPDark),
           onPressed: () {
             // Navigator.pop(context, 1);
             Navigator.of(context).pop();
@@ -137,17 +125,19 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
     return <Widget>[
       const SizedBox(height: 20),
       Text(L10n.of(context)!.textNameChange,
-          textAlign: TextAlign.left, style: AppTheme.cardTextDarkSmaller),
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.bodySmall),
       Text(L10n.of(context)!.textAddUser,
-          textAlign: TextAlign.left, style: AppTheme.cardTextDarkSmaller),
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.bodySmall),
       const SizedBox(height: 14),
       Container(
-          child: AppTheme.getInputForm(
-              _todoTitleController, L10n.of(context)!.listName)),
+          child: getInputForm(
+              context, _todoTitleController, L10n.of(context)!.listName)),
       const SizedBox(height: 8),
       Container(
-          child: AppTheme.getInputArea(
-              _todoDescController, L10n.of(context)!.description)),
+          child: getInputArea(
+              context, _todoDescController, L10n.of(context)!.description)),
       const SizedBox(height: 20),
       Mutation<dynamic>(
         options: MutationOptions<dynamic>(
@@ -163,14 +153,10 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
           runMutation,
           result,
         ) {
-          print(result);
           return SizedBox(
             height: 50,
             // リスト追加ボタン
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  textStyle: const TextStyle(color: AppTheme.white),
-                  primary: AppTheme.colorTMPDark),
               onPressed: () {
                 widget.setLoading(true);
                 runMutation(<String, String>{
@@ -190,9 +176,6 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
         height: 50,
         // リスト追加ボタン
         child: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-              textStyle: const TextStyle(color: AppTheme.colorTMPDark),
-              primary: AppTheme.colorTMPDark),
           onPressed: () {
             // Navigator.of(context).pushReplacementNamed('/');
             Navigator.of(context).pop();
@@ -206,9 +189,9 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
   Widget addTodoGroupCard(BuildContext context) {
     return Container(
         margin: const EdgeInsets.only(top: 8, bottom: 8),
-        decoration: const BoxDecoration(
-          color: AppTheme.addButtonBgColor,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: const BorderRadius.only(
             bottomRight: Radius.circular(8),
             bottomLeft: Radius.circular(8),
             topLeft: Radius.circular(8),
@@ -217,6 +200,6 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
         ),
         child: const Padding(
             padding: EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 32),
-            child: Icon(Icons.add, size: 32, color: AppTheme.background)));
+            child: Icon(Icons.add, size: 32, color: Colors.white)));
   }
 }

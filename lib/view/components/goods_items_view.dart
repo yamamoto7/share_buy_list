@@ -41,6 +41,7 @@ class _GoodsItemsViewState extends State<GoodsItemsView>
     return Subscription<Widget>(
         options: SubscriptionOptions(
           fetchPolicy: FetchPolicy.cacheAndNetwork,
+          cacheRereadPolicy: CacheRereadPolicy.mergeOptimistic,
           document: gql(fetchGoodsItems(_goodsItem.id)),
         ),
         onSubscriptionResult: (subscriptionResult, client) {},

@@ -162,13 +162,15 @@ String updateGoodsGroup = '''
   }
 ''';
 
-String deleteTodoGroup = '''
-  mutation DeleteUserGoodsItem (\$id: bigint!) {
-    delete_user_goods_id_by_pk(id: \$id) {
-      id
-    }
+String deleteGoodsGroup(String userGoodsItemID) {
+  return '''
+mutation DeleteUserGoodsItem {
+  delete_user_goods_item_by_pk(id: "$userGoodsItemID") {
+    id
   }
+}
 ''';
+}
 
 String fetchGoodsItems(String goodsItemID) {
   return '''

@@ -44,10 +44,12 @@ class StartWidget extends StatefulWidget {
 class _StartWidgetState extends State<StartWidget> {
   late ThemeMode themeMode;
   late Locale language;
+  late AppStyle appStyle;
   @override
   void initState() {
     language = Config.getLanguageLocale();
     themeMode = Config.themeMode;
+    appStyle = AppStyle('hoge');
     super.initState();
   }
 
@@ -59,10 +61,10 @@ class _StartWidgetState extends State<StartWidget> {
     });
   }
 
-  static void setThememode(BuildContext context, ThemeMode value) {
+  static void setThememode(
+      BuildContext context, ThemeMode value, String Themename) {
     final stateObject = context.findAncestorStateOfType<_StartWidgetState>();
 
-    print(value);
     stateObject!.setState(() {
       stateObject.themeMode = value;
     });
@@ -82,14 +84,8 @@ class _StartWidgetState extends State<StartWidget> {
     return MaterialApp(
       title: 'Share Buy List',
       debugShowCheckedModeBanner: true,
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blueGrey,
-          textTheme: AppTheme.textTheme),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        /* dark theme settings */
-      ),
+      theme: appStyle.themeData,
+      darkTheme: appStyle.themeDataDark,
       themeMode: themeMode,
       /* ThemeMode.system to follow system theme, 
          ThemeMode.light for light theme, 

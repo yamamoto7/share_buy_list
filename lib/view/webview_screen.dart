@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/config.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -31,11 +30,6 @@ class _WebViewState extends State<WebViewScreen> {
     final languageKey = Config.getLanguageKey();
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppTheme.background,
-        titleTextStyle: AppTheme.appBarText,
-        iconTheme: const IconThemeData(color: AppTheme.textDark),
-        toolbarHeight: 50,
         title: Text(widget.title),
       ),
       body: WebView(

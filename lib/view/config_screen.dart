@@ -88,7 +88,6 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                     ),
                                     CupertinoButton(
                                       onPressed: () {
-                                        print('start');
                                         widget.setLanguage(
                                             context,
                                             Config
@@ -117,6 +116,10 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                   useMagnifier: true,
                                   itemExtent: 32,
                                   // This is called when selected item is changed.
+                                  scrollController: FixedExtentScrollController(
+                                      initialItem: Config
+                                          .languageItems[_selectedLanguageCode]!
+                                          .getIndex()),
                                   onSelectedItemChanged: (int selectedItem) {
                                     setState(() {
                                       _selectedLanguageCode =
@@ -147,7 +150,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   onToggle: (value) {
                     setState(() {
                       Config.setDarkMode(value);
-                      widget.setThememode(context, Config.themeMode);
+                      widget.setThememode(context, Config.themeMode, '');
                     });
                   },
                   initialValue: Config.darkmode,
@@ -176,7 +179,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                 ),
                 SettingsTile.navigation(
                   title: Text(L10n.of(context)!.settingAbout),
-                  description: Text(L10n.of(context)!.settingAboutDescription),
+                  description: Text(''),
                 ),
               ],
             ),

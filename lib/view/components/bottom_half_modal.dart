@@ -19,7 +19,7 @@ class _BottomHalfModalState extends State<BottomHalfModal>
     return GestureDetector(
         onTap: () {
           showModalBottomSheet<dynamic>(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Theme.of(context).backgroundColor,
               context: context,
               isScrollControlled: true,
               shape: const RoundedRectangleBorder(
@@ -37,7 +37,7 @@ class _BottomHalfModalState extends State<BottomHalfModal>
                                 height: 480,
                                 decoration: const BoxDecoration(
                                   //モーダル自体の色
-                                  color: Colors.white,
+                                  // color: Colors.white,
                                   //角丸にする
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(20),
@@ -49,7 +49,6 @@ class _BottomHalfModalState extends State<BottomHalfModal>
                                       alignment: Alignment.center,
                                       height: 37,
                                       decoration: const BoxDecoration(
-                                        color: Colors.white,
                                         borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(20),
                                           topRight: Radius.circular(20),

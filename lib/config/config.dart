@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageItem {
-  LanguageItem(String codeVal, String labelVal, Locale localeValue) {
+  LanguageItem(
+      int indexVal, String codeVal, String labelVal, Locale localeValue) {
+    index = indexVal;
     code = codeVal;
     label = labelVal;
     locale = localeValue;
   }
+
+  late int index;
   late String code;
   late String label;
   late Locale locale;
+
+  int getIndex() {
+    return index;
+  }
 
   String getCode() {
     return code;
@@ -26,14 +34,13 @@ class LanguageItem {
 
 class Config {
   static final Map<String, LanguageItem> languageItems = {
-    'en': LanguageItem('en', 'English', const Locale('en')),
-    'ja': LanguageItem('ja', '日本語', const Locale('ja'))
+    'en': LanguageItem(0, 'en', 'English', const Locale('en')),
+    'ja': LanguageItem(1, 'ja', '日本語', const Locale('ja'))
   };
   static final Map<int, String> languageKeys = {0: 'en', 1: 'ja'};
 
   void init() {}
 
-  static late bool isFirstAccess;
   static late SharedPreferences prefs;
   static late bool darkmode;
   static late ThemeMode themeMode;
@@ -41,12 +48,6 @@ class Config {
 
   static Future<void> hoge() async {
     prefs = await SharedPreferences.getInstance();
-
-    var isFirstAccess = prefs.getBool('isFirstAccess') ?? true;
-    if (isFirstAccess) {
-      isFirstAccess = true;
-      await prefs.setBool('isFirstAccess', false);
-    }
 
     if (prefs.getBool('darkmode') != null &&
         prefs.getBool('darkmode') == true) {
@@ -79,10 +80,6 @@ class Config {
 
   static String getLanguageLabel() {
     return currentLanguageItem.getLabel();
-  }
-
-  static bool getIsFirstAccess() {
-    return isFirstAccess;
   }
 
   static bool setLanguage(String languageCode) {
