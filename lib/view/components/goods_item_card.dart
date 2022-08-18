@@ -7,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
+import 'package:share_buy_list/view/components/edit_goods_item_modal.dart';
 
 class GoodsItemView extends StatefulWidget {
   const GoodsItemView(
@@ -30,12 +31,12 @@ class _GoodsItemViewState extends State<GoodsItemView>
     super.initState();
   }
 
-  void pressEditButton() {
-    print(1);
+  Future<void> pressEditButton() async {
+    Navigator.pop(context, 1);
   }
 
-  void pressRemoveButton() {
-    print(1);
+  Future<void> pressRemoveButton(String goodsItemID) async {
+    await graphQlObject.query(deleteGoodsItem(goodsItemID));
   }
 
   @override
@@ -47,40 +48,30 @@ class _GoodsItemViewState extends State<GoodsItemView>
     final isDir = widget.goodsItemData.isDirectory;
     return Slidable(
       key: ValueKey(widget.goodsItemData.id),
-      closeOnScroll: false,
+      closeOnScroll: true,
       endActionPane: ActionPane(
         dismissible: DismissiblePane(onDismissed: () {}),
         dragDismissible: false,
-        motion: const ScrollMotion(),
+        motion: const ScrollMotion(key: Key('hoge')),
         children: <Widget>[
           const SizedBox(width: 8),
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.only(
-                  top: 12, right: 16, left: 16, bottom: 12),
-              primary: Theme.of(context).primaryColor,
-              side: BorderSide(width: 1, color: Theme.of(context).primaryColor),
-            ),
-            onPressed: () async {
-              pressEditButton();
-              Navigator.pop(context, 1);
-            },
-            child: Text(L10n.of(context)!.edit),
-          ),
+          EditGoodsItemModal(goodsItemData: widget.goodsItemData),
           const SizedBox(width: 8),
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.only(
-                  top: 12, right: 16, left: 16, bottom: 12),
-              primary: Theme.of(context).errorColor,
-              side: BorderSide(width: 1, color: Theme.of(context).errorColor),
-            ),
-            onPressed: () async {
-              pressRemoveButton();
-              Navigator.pop(context, 1);
-            },
-            child: Text(L10n.of(context)!.delete),
-          )
+          Builder(builder: (BuildContext context) {
+            return OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.only(
+                    top: 12, right: 16, left: 16, bottom: 12),
+                primary: Theme.of(context).errorColor,
+                side: BorderSide(width: 1, color: Theme.of(context).errorColor),
+              ),
+              onPressed: () async {
+                await Slidable.of(context)!.close();
+                await pressRemoveButton(widget.goodsItemData.id);
+              },
+              child: Text(L10n.of(context)!.delete),
+            );
+          })
         ],
       ),
       child: isDir

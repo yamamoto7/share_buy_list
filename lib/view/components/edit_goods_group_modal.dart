@@ -30,9 +30,9 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
-  late TextEditingController _todoTitleController;
-  late TextEditingController _todoDescController;
-  late TextEditingController _todoGroupIDController;
+  late TextEditingController _goodsGroupTitleController;
+  late TextEditingController _goodsGroupDescController;
+  late TextEditingController _goodsGroupGroupIDController;
   late List<Widget> _modalWidgetList;
   late List<Widget> _modalWidgetListAddUser;
   late String _copyButtonText;
@@ -40,11 +40,11 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
 
   @override
   void initState() {
-    _todoTitleController =
+    _goodsGroupTitleController =
         TextEditingController(text: widget.goodsGroupData.title);
-    _todoDescController =
+    _goodsGroupDescController =
         TextEditingController(text: widget.goodsGroupData.description);
-    _todoGroupIDController =
+    _goodsGroupGroupIDController =
         TextEditingController(text: widget.goodsGroupData.id);
 
     // TabControllerの初期化
@@ -148,25 +148,31 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
       const SizedBox(height: 12),
       Container(
           child: getInputForm(
-              context, _todoGroupIDController, L10n.of(context)!.listId)),
+              context, _goodsGroupGroupIDController, L10n.of(context)!.listId)),
+      const SizedBox(height: 8),
       StatefulBuilder(
-        builder: (BuildContext context, setState) => ElevatedButton.icon(
-          icon: const Icon(Icons.copy),
-          label: Text(_copyButtonText),
-          onPressed: () {
-            // Clipboard.setData(ClipboardData(text: _todoGroupIDController.text));
-            // setState(() {});
-            Clipboard.setData(ClipboardData(text: _todoGroupIDController.text))
-                .then(
-              (value) {
-                setState(() {
-                  _copyButtonText = L10n.of(context)!.copied;
-                });
-              },
-            );
-          },
+        builder: (BuildContext context, setState) => SizedBox(
+          height: 50,
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.copy),
+            label: Text(_copyButtonText),
+            onPressed: () {
+              // Clipboard.setData(ClipboardData(text: _goodsGroupGroupIDController.text));
+              // setState(() {});
+              Clipboard.setData(
+                      ClipboardData(text: _goodsGroupGroupIDController.text))
+                  .then(
+                (value) {
+                  setState(() {
+                    _copyButtonText = L10n.of(context)!.copied;
+                  });
+                },
+              );
+            },
+          ),
         ),
       ),
+      const SizedBox(height: 8),
       SizedBox(
         height: 50,
         // リスト追加ボタン
@@ -187,11 +193,11 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
       const SizedBox(height: 14),
       Container(
           child: getInputForm(
-              context, _todoTitleController, L10n.of(context)!.listName)),
+              context, _goodsGroupTitleController, L10n.of(context)!.listName)),
       const SizedBox(height: 8),
       Container(
           child: getInputArea(
-              context, _todoDescController, L10n.of(context)!.memo)),
+              context, _goodsGroupDescController, L10n.of(context)!.memo)),
       const SizedBox(height: 20),
       Mutation<dynamic>(
         options: MutationOptions<dynamic>(
@@ -216,8 +222,8 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
               onPressed: () {
                 widget.setLoading(true);
                 // runMutation({
-                // 'title': _todoTitleController.text,
-                // 'description': _todoDescController.text,
+                // 'title': _goodsGroupTitleController.text,
+                // 'description': _goodsGroupDescController.text,
                 // 'user_id': UserConfig.userID,
                 // 'id': goodsGroupData.todo_item_id.toString()
                 // });

@@ -147,6 +147,21 @@ mutation UpdateGoodsItem (\$id: uuid!, \$is_finished: Boolean) {
 }
 ''';
 
+String updateGoodsItemData = '''
+mutation UpdateGoodsItemData (\$id: uuid!, \$user_id: uuid, \$title: String, \$description: String) {
+  update_goods_item_by_pk(
+    pk_columns: {id: \$id}, _set: {last_updated_user_id: \$user_id, title: \$title, description: \$description}) {
+      id
+      is_finished
+      is_directory
+      title
+      description
+      created_at
+      updated_at
+  }
+}
+''';
+
 String updateGoodsGroup = '''
   mutation UpdateGoodsItem (\$id: bigint!, \$user_id: uuid, \$title: String, \$description: String) {
     update_goods_item_by_pk(
@@ -161,6 +176,16 @@ String updateGoodsGroup = '''
     }
   }
 ''';
+
+String deleteGoodsItem(String goodsItemID) {
+  return '''
+mutation DeleteGoodsItem {
+  delete_goods_item_by_pk(id: "$goodsItemID") {
+    id
+  }
+}
+''';
+}
 
 String deleteGoodsGroup(String userGoodsItemID) {
   return '''

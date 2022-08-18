@@ -26,10 +26,12 @@ class GoodsItemsView extends StatefulWidget {
 class _GoodsItemsViewState extends State<GoodsItemsView>
     with TickerProviderStateMixin {
   late GoodsItemData _goodsItem;
+  late ScrollController _scrollController;
   @override
   void initState() {
     // 初期設定
     _goodsItem = widget.goodsItem;
+    _scrollController = ScrollController();
     super.initState();
   }
 
@@ -47,7 +49,9 @@ class _GoodsItemsViewState extends State<GoodsItemsView>
           cacheRereadPolicy: CacheRereadPolicy.mergeOptimistic,
           document: gql(fetchGoodsItems(_goodsItem.id)),
         ),
-        onSubscriptionResult: (subscriptionResult, client) {},
+        onSubscriptionResult: (subscriptionResult, client) {
+          print(subscriptionResult.data!['goods_item'].length);
+        },
         builder: (result) {
           if (result.hasException) {
             return Text(result.exception.toString());
@@ -97,6 +101,7 @@ class _GoodsItemsViewState extends State<GoodsItemsView>
                         top: 0, bottom: 0, right: 16, left: 16),
                     itemCount: goodsItemDataList.length,
                     scrollDirection: Axis.vertical,
+                    controller: _scrollController,
                     itemBuilder: (BuildContext context, int index) {
                       return GoodsItemView(
                           goodsItemData: goodsItemDataList[index],
