@@ -41,6 +41,8 @@
     "showGoodsGroupItemsScreenGroupNumLimit": "※ 作成できるリストの数は最大3個です。",
     "showGoodsGroupItemsScreenAddItemLeft": "下の",
     "showGoodsGroupItemsScreenAddItemRight": "からアイテムを追加できます。",
+    "showGoodsGroupItemsScreenFetchError": "データの同期に失敗しました。",
+    "showGoodsItemsScreenFetchError": "データの同期に失敗しました。",
     "settingAccount": "アカウント設定",
     "settingUserName": "ユーザー名",
     "settingLanguage": "言語(Language)",

@@ -11,8 +11,6 @@ import 'package:share_buy_list/view/components/add_goods_group_modal.dart';
 import 'package:share_buy_list/view/components/goods_group_card.dart';
 import 'package:share_buy_list/view/components/loading.dart';
 
-import '../config/size_config.dart';
-
 class ShowGoodsGroupItemsScreen extends StatefulWidget {
   const ShowGoodsGroupItemsScreen(
       {Key? key, required this.setLoading, required this.openGoodsItem})
@@ -50,7 +48,8 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
       Query<dynamic>(
           options: QueryOptions<dynamic>(
               document: gql(fetchUserGoodsItems(UserConfig.userID)),
-              fetchPolicy: FetchPolicy.noCache),
+              fetchPolicy: FetchPolicy.cacheAndNetwork,
+              cacheRereadPolicy: CacheRereadPolicy.ignoreOptimisitic),
           builder: (QueryResult<dynamic> result,
               {VoidCallback? refetch, FetchMore<dynamic>? fetchMore}) {
             Widget childWidget;
@@ -65,19 +64,22 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
 
             if (result.hasException) {
               // Error occured
-              print('exeption');
-              print(result.exception.toString());
+              print('ERROR');
+              print(result.exception);
               childWidget = ListView(padding: listPadding, children: [
-                Container(
-                  width: SizeConfig.screenWidth,
-                  color: Colors.blue,
-                  child: Text(L10n.of(context)!.edit),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.only(
+                        top: 12, right: 16, left: 16, bottom: 12),
+                    primary: Theme.of(context).errorColor,
+                    side: BorderSide(
+                        width: 1, color: Theme.of(context).errorColor),
+                  ),
+                  onPressed: () async {},
+                  child: Text(
+                    L10n.of(context)!.showGoodsGroupItemsScreenFetchError,
+                  ),
                 ),
-                Container(
-                  width: SizeConfig.screenWidth,
-                  color: Colors.red,
-                  child: Text(L10n.of(context)!.delete),
-                )
               ]);
             } else if (result.isLoading) {
               // Now loading
@@ -102,7 +104,7 @@ class _ShowGoodsGroupItemsScreenState extends State<ShowGoodsGroupItemsScreen> {
                     if (index == goodsGroupList.length) {
                       if (goodsGroupList.length < MAX_GOODS_GROUP_NUM) {
                         return AddGoodsGroupModal(
-                            setLoading: widget.setLoading, onRefetch: refetch);
+                            setLoading: widget.setLoading);
                       } else {
                         return Text(
                             L10n.of(context)!

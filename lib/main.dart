@@ -14,6 +14,7 @@ import 'package:share_buy_list/config/user_config.dart';
 import 'package:share_buy_list/data/seed_for_init.dart';
 import 'package:share_buy_list/model/user_data.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
+import 'package:share_buy_list/service/sql_handler.dart';
 import 'package:share_buy_list/view/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,9 +23,11 @@ void main() async {
   await initHiveForFlutter();
   final prefs = await SharedPreferences.getInstance();
   final user = await initUser(prefs);
+  await SqlObject.initSql();
   UserConfig().init(user);
   await Config.hoge();
   //[FIXME: delete] print(Directory.systemTemp.path);
+  print(Directory.systemTemp.path);
 
   await SystemChrome.setPreferredOrientations(
           <DeviceOrientation>[DeviceOrientation.portraitUp])

@@ -41,6 +41,8 @@
     "showGoodsGroupItemsScreenGroupNumLimit": "* The number of lists you can create is limited to 3.",
     "showGoodsGroupItemsScreenAddItemLeft": "Press",
     "showGoodsGroupItemsScreenAddItemRight": "to add items.",
+    "showGoodsGroupItemsScreenFetchError": "Failed to fetch data.",
+    "showGoodsItemsScreenFetchError": "Failed to fetch data.",
     "settingAccount": "Account",
     "settingUserName": "User name",
     "settingLanguage": "Language",

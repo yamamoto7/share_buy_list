@@ -38,6 +38,14 @@ class _ConfigScreenState extends State<ConfigScreen> {
       child: SafeArea(
         bottom: false,
         child: SettingsList(
+          lightTheme: SettingsThemeData(
+            settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+            settingsSectionBackground: Theme.of(context).bottomAppBarColor,
+          ),
+          darkTheme: SettingsThemeData(
+            settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+            settingsSectionBackground: Theme.of(context).bottomAppBarColor,
+          ),
           applicationType: ApplicationType.cupertino,
           platform: DevicePlatform.iOS,
           sections: [

@@ -21,12 +21,12 @@ Widget goodsGroupCard(BuildContext context, GoodsGroupData goodsGroupData,
           child: Row(children: <Widget>[
             Expanded(
                 child: Column(children: <Widget>[
-              Text(goodsGroupData.title,
+              Text(goodsGroupData.goodsItem.title,
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.displayMedium),
               SizedBox(
                 width: double.infinity,
-                child: Text(goodsGroupData.description,
+                child: Text(goodsGroupData.goodsItem.description,
                     textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.headlineMedium),
               ),

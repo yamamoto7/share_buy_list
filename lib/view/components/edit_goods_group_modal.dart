@@ -37,13 +37,15 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
   late List<Widget> _modalWidgetListAddUser;
   late String _copyButtonText;
   late List<Widget> _selectItems;
+  late bool _isOnline;
 
   @override
   void initState() {
     _goodsGroupTitleController =
-        TextEditingController(text: widget.goodsGroupData.title);
-    _goodsGroupDescController =
-        TextEditingController(text: widget.goodsGroupData.description);
+        TextEditingController(text: widget.goodsGroupData.goodsItem.title);
+    _goodsGroupDescController = TextEditingController(
+        text: widget.goodsGroupData.goodsItem.description);
+    _isOnline = widget.goodsGroupData.userGoodsItemID.isNotEmpty;
     _goodsGroupGroupIDController =
         TextEditingController(text: widget.goodsGroupData.id);
 
@@ -55,13 +57,42 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
   Widget build(BuildContext context) {
     _copyButtonText = L10n.of(context)!.copy;
     _selectItems = <Widget>[
-      Tab(text: L10n.of(context)!.manageUsers),
-      Tab(text: L10n.of(context)!.edit)
+      Tab(text: L10n.of(context)!.edit),
     ];
-    _tabController = TabController(length: _selectItems.length, vsync: this);
+
     _modalWidgetList = getModalWidgetList(context, widget.goodsGroupData);
-    _modalWidgetListAddUser =
-        getModalWidgetListAddUser(context, widget.goodsGroupData);
+    var contents = <Widget>[
+      ListView.builder(
+          shrinkWrap: true,
+          itemCount: _modalWidgetList.length,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+                padding: EdgeInsets.only(
+                    right: SizeConfig.safeBlockHorizontal * 10,
+                    left: SizeConfig.safeBlockHorizontal * 10),
+                child: _modalWidgetList[index]);
+          }),
+    ];
+
+    if (_isOnline) {
+      _selectItems.add(Tab(text: L10n.of(context)!.manageUsers));
+      _modalWidgetListAddUser =
+          getModalWidgetListAddUser(context, widget.goodsGroupData);
+      contents.add(ListView.builder(
+          shrinkWrap: true,
+          itemCount: _modalWidgetListAddUser.length,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+                padding: EdgeInsets.only(
+                    right: SizeConfig.safeBlockHorizontal * 10,
+                    left: SizeConfig.safeBlockHorizontal * 10),
+                child: _modalWidgetListAddUser[index]);
+          }));
+    }
+
+    _tabController = TabController(length: _selectItems.length, vsync: this);
     return BottomHalfModal(
         contents: Expanded(
             child: Column(children: [
@@ -74,30 +105,7 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
                   onTap: (int index) {})),
           const SizedBox(height: 20),
           Expanded(
-              child: TabBarView(controller: _tabController, children: <Widget>[
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: _modalWidgetListAddUser.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                      padding: EdgeInsets.only(
-                          right: SizeConfig.safeBlockHorizontal * 10,
-                          left: SizeConfig.safeBlockHorizontal * 10),
-                      child: _modalWidgetListAddUser[index]);
-                }),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: _modalWidgetList.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                      padding: EdgeInsets.only(
-                          right: SizeConfig.safeBlockHorizontal * 10,
-                          left: SizeConfig.safeBlockHorizontal * 10),
-                      child: _modalWidgetList[index]);
-                })
-          ]))
+              child: TabBarView(controller: _tabController, children: contents))
         ])),
         child: editGoodsGroupButton(context));
   }
@@ -147,8 +155,8 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
           style: Theme.of(context).textTheme.bodySmall),
       const SizedBox(height: 12),
       Container(
-          child: getInputForm(
-              context, _goodsGroupGroupIDController, L10n.of(context)!.listId)),
+          child: getInputForm(context, _goodsGroupGroupIDController,
+              L10n.of(context)!.listId, false)),
       const SizedBox(height: 8),
       StatefulBuilder(
         builder: (BuildContext context, setState) => SizedBox(
@@ -192,12 +200,12 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
     return <Widget>[
       const SizedBox(height: 14),
       Container(
-          child: getInputForm(
-              context, _goodsGroupTitleController, L10n.of(context)!.listName)),
+          child: getInputForm(context, _goodsGroupTitleController,
+              L10n.of(context)!.listName, false)),
       const SizedBox(height: 8),
       Container(
-          child: getInputArea(
-              context, _goodsGroupDescController, L10n.of(context)!.memo)),
+          child: getInputArea(context, _goodsGroupDescController,
+              L10n.of(context)!.memo, false)),
       const SizedBox(height: 20),
       Mutation<dynamic>(
         options: MutationOptions<dynamic>(
@@ -275,8 +283,8 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
                         onPressed: () async {
                           widget.setLoading(true);
                           Navigator.pop(context);
-                          await graphQlObject.query(deleteGoodsGroup(
-                              goodsGroupData.myUserGoodsItemID));
+                          await graphQlObject.query(
+                              deleteGoodsGroup(goodsGroupData.userGoodsItemID));
                           // print(result);
                           widget.setLoading(false);
                         },

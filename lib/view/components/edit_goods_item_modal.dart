@@ -51,7 +51,7 @@ class _EditGoodsItemModalState extends State<EditGoodsItemModal>
           padding: const EdgeInsets.only(left: 10),
           child: Container(
               width: 65,
-              height: 42,
+              height: 46,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Theme.of(context).backgroundColor,
@@ -72,12 +72,12 @@ class _EditGoodsItemModalState extends State<EditGoodsItemModal>
     return <Widget>[
       const SizedBox(height: 30),
       Container(
-          child: getInputForm(
-              context, _goodsGroupTitleController, L10n.of(context)!.name)),
+          child: getInputForm(context, _goodsGroupTitleController,
+              L10n.of(context)!.name, true)),
       const SizedBox(height: 8),
       Container(
-          child: getInputArea(
-              context, _goodsGroupDescController, L10n.of(context)!.memo)),
+          child: getInputArea(context, _goodsGroupDescController,
+              L10n.of(context)!.memo, false)),
       const SizedBox(height: 20),
       Mutation<dynamic>(
         options: MutationOptions<dynamic>(
@@ -114,7 +114,10 @@ class _EditGoodsItemModalState extends State<EditGoodsItemModal>
           onPressed: () {
             Navigator.pop(context, 1);
           },
-          child: Text(L10n.of(context)!.cancel),
+          child: Text(
+            L10n.of(context)!.cancel,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         ),
       ),
     ];

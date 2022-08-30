@@ -5,11 +5,8 @@ import 'package:share_buy_list/service/utils.dart';
 class GoodsGroupData {
   GoodsGroupData(
       {this.id = '',
-      this.myUserGoodsItemID = '',
-      this.title = '',
-      this.description = '',
-      required this.goodsItemId,
-      this.goodsItem,
+      this.userGoodsItemID = '',
+      required this.goodsItem,
       this.users});
 
   factory GoodsGroupData.fromJson(dynamic parsedJson, String userGodosItemID) {
@@ -18,19 +15,13 @@ class GoodsGroupData {
         .toList());
     return GoodsGroupData(
         id: parsedJson['id'] as String,
-        myUserGoodsItemID: userGodosItemID,
-        title: parsedJson['title'] as String,
-        description: parsedJson['description'] as String,
-        goodsItemId: parsedJson['goods_item_id'] as String,
+        userGoodsItemID: userGodosItemID,
         goodsItem: GoodsItemData.fromJson(parsedJson),
         users: users);
   }
 
   String id;
-  String myUserGoodsItemID;
-  String title;
-  String description;
-  String goodsItemId;
-  GoodsItemData? goodsItem;
+  String userGoodsItemID;
+  GoodsItemData goodsItem;
   List<User>? users;
 }

@@ -142,8 +142,6 @@ class _AppHomeScreenState extends State<AppHomeScreen>
                   goodsItem: goodsItemData,
                   openGoodsItem: openGoodsItem,
                   setLoading: setLoading,
-                  isAddableTodoGroup:
-                      goodsItemPageDepth + 1 < MAX_GOODS_GROUP_NUM,
                   goodsItemDepth: goodsItemPageDepth + 1)),
           adContainer
         ]));

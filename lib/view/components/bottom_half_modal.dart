@@ -55,9 +55,15 @@ class _BottomHalfModalState extends State<BottomHalfModal>
                                           padding: const EdgeInsets.only(
                                               top: 24, bottom: 10),
                                           child: Container(
-                                              width: 60,
-                                              height: 3,
-                                              color: const Color(0xFFCAC1C0)))),
+                                            width: 60,
+                                            height: 3,
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(2),
+                                              ),
+                                              color: Color(0xFFCAC1C0),
+                                            ),
+                                          ))),
                                   const SizedBox(height: 20),
                                   widget.contents
                                 ])))));

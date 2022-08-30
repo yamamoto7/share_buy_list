@@ -9,10 +9,9 @@ import 'package:share_buy_list/service/graphql_handler.dart';
 import 'package:share_buy_list/view/components/bottom_half_modal.dart';
 
 class AddGoodsGroupModal extends StatefulWidget {
-  const AddGoodsGroupModal({Key? key, required this.setLoading, this.onRefetch})
+  const AddGoodsGroupModal({Key? key, required this.setLoading})
       : super(key: key);
   final Function setLoading;
-  final VoidCallback? onRefetch;
 
   @override
   _AddGoodsGroupModalState createState() => _AddGoodsGroupModalState();
@@ -132,12 +131,12 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
           style: Theme.of(context).textTheme.bodySmall),
       const SizedBox(height: 14),
       Container(
-          child: getInputForm(
-              context, _todoTitleController, L10n.of(context)!.listName)),
+          child: getInputForm(context, _todoTitleController,
+              L10n.of(context)!.listName, false)),
       const SizedBox(height: 8),
       Container(
-          child: getInputArea(
-              context, _todoDescController, L10n.of(context)!.description)),
+          child: getInputArea(context, _todoDescController,
+              L10n.of(context)!.description, false)),
       const SizedBox(height: 20),
       Mutation<dynamic>(
         options: MutationOptions<dynamic>(
@@ -188,6 +187,7 @@ class _AddGoodsGroupModalState extends State<AddGoodsGroupModal>
 
   Widget addTodoGroupCard(BuildContext context) {
     return Container(
+        width: SizeConfig.safeBlockHorizontal * 94,
         margin: const EdgeInsets.only(top: 8, bottom: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,

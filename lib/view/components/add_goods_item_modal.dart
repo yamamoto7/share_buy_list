@@ -24,23 +24,23 @@ class AddGoodsItemModal extends StatefulWidget {
   final bool isDirAddable;
 
   @override
-  _AddTodoItemModalState createState() => _AddTodoItemModalState();
+  _AddGoodsItemModalState createState() => _AddGoodsItemModalState();
 }
 
-class _AddTodoItemModalState extends State<AddGoodsItemModal>
+class _AddGoodsItemModalState extends State<AddGoodsItemModal>
     with TickerProviderStateMixin {
   late List<Widget> _selectItems;
   bool selectIsDir = false;
   TabController? _tabController;
 
-  late TextEditingController _todoTitleController;
-  late TextEditingController _todoDescController;
+  late TextEditingController _goodsTitleController;
+  late TextEditingController _goodsDescController;
   late List<Widget> _modalWidgetList;
 
   @override
   void initState() {
-    _todoTitleController = TextEditingController(text: '');
-    _todoDescController = TextEditingController(text: '');
+    _goodsTitleController = TextEditingController(text: '');
+    _goodsDescController = TextEditingController(text: '');
 
     super.initState();
   }
@@ -129,11 +129,11 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
       const SizedBox(height: 20),
       Container(
           child: getInputForm(
-              context, _todoTitleController, L10n.of(context)!.name)),
+              context, _goodsTitleController, L10n.of(context)!.name, true)),
       const SizedBox(height: 8),
       Container(
           child: getInputArea(
-              context, _todoDescController, L10n.of(context)!.memo)),
+              context, _goodsDescController, L10n.of(context)!.memo, false)),
       const SizedBox(height: 20),
       Mutation<Widget>(
         options: MutationOptions(
@@ -148,15 +148,15 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
             child: ElevatedButton(
               onPressed: () {
                 runMutation(<String, dynamic>{
-                  'title': _todoTitleController.text,
-                  'description': _todoDescController.text,
+                  'title': _goodsTitleController.text,
+                  'description': _goodsDescController.text,
                   'goods_item_id': widget.goodsItemData.id,
                   'user_id': UserConfig.userID,
                   'is_directory': selectIsDir
                 });
                 Navigator.pop(context, 1);
-                _todoTitleController.clear();
-                _todoDescController.clear();
+                _goodsTitleController.clear();
+                _goodsDescController.clear();
               },
               child: Text(L10n.of(context)!.create),
             ),

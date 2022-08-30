@@ -7,17 +7,22 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
+import 'package:share_buy_list/service/sql_handler.dart';
 import 'package:share_buy_list/view/components/edit_goods_item_modal.dart';
 
 class GoodsItemView extends StatefulWidget {
-  const GoodsItemView(
-      {Key? key,
-      required this.goodsItemData,
-      required this.changeCurrentGoodsItem})
-      : super(key: key);
+  const GoodsItemView({
+    Key? key,
+    required this.goodsItemData,
+    required this.changeCurrentGoodsItem,
+    required this.removeGoodsItem,
+    required this.toggleGoodsItem,
+  }) : super(key: key);
 
   final GoodsItemData goodsItemData;
   final Function changeCurrentGoodsItem;
+  final Function removeGoodsItem;
+  final Function toggleGoodsItem;
 
   @override
   _GoodsItemViewState createState() => _GoodsItemViewState();
@@ -35,8 +40,8 @@ class _GoodsItemViewState extends State<GoodsItemView>
     Navigator.pop(context, 1);
   }
 
-  Future<void> pressRemoveButton(String goodsItemID) async {
-    await graphQlObject.query(deleteGoodsItem(goodsItemID));
+  Future<void> pressRemoveButton(GoodsItemData goodsItemData) async {
+    await widget.removeGoodsItem(goodsItemData);
   }
 
   @override
@@ -46,38 +51,9 @@ class _GoodsItemViewState extends State<GoodsItemView>
 
   Widget getSlidableCard(BuildContext context, GoodsItemData goodsItemData) {
     final isDir = widget.goodsItemData.isDirectory;
-    return Slidable(
-      key: ValueKey(widget.goodsItemData.id),
-      closeOnScroll: true,
-      endActionPane: ActionPane(
-        dismissible: DismissiblePane(onDismissed: () {}),
-        dragDismissible: false,
-        motion: const ScrollMotion(key: Key('hoge')),
-        children: <Widget>[
-          const SizedBox(width: 8),
-          EditGoodsItemModal(goodsItemData: widget.goodsItemData),
-          const SizedBox(width: 8),
-          Builder(builder: (BuildContext context) {
-            return OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.only(
-                    top: 12, right: 16, left: 16, bottom: 12),
-                primary: Theme.of(context).errorColor,
-                side: BorderSide(width: 1, color: Theme.of(context).errorColor),
-              ),
-              onPressed: () async {
-                await Slidable.of(context)!.close();
-                await pressRemoveButton(widget.goodsItemData.id);
-              },
-              child: Text(L10n.of(context)!.delete),
-            );
-          })
-        ],
-      ),
-      child: isDir
-          ? goodsDirCard(context, goodsItemData)
-          : goodsItemCard(context, goodsItemData),
-    );
+    return isDir
+        ? goodsDirCard(context, goodsItemData)
+        : goodsItemCard(context, goodsItemData);
   }
 
   Widget goodsDirCard(BuildContext context, GoodsItemData goodsItemData) {
@@ -134,83 +110,54 @@ class _GoodsItemViewState extends State<GoodsItemView>
                 : Border.all(color: Theme.of(context).primaryColor),
             borderRadius: const BorderRadius.all(Radius.circular(8.0))),
         child: Builder(builder: (context) {
-          return Mutation<Widget>(
-              options: MutationOptions(
-                document: gql(updateGoodsItem),
-                update: (GraphQLDataProxy cache, result) {},
-                onCompleted: (dynamic resultData) {},
-              ),
-              builder: (runMutation, result) {
-                return GestureDetector(
-                    onTap: () {
-                      if (goodsItemData.isFinished == true) {
-                        runMutation(<String, dynamic>{
-                          'id': goodsItemData.id,
-                          'is_finished': false
-                        });
-                        setState(() {
-                          goodsItemData.isFinished = false;
-                        });
-                      } else if (goodsItemData.isFinished == false) {
-                        runMutation(<String, dynamic>{
-                          'id': goodsItemData.id,
-                          'is_finished': true
-                        });
-                        setState(() {
-                          goodsItemData.isFinished = true;
-                        });
-                      }
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                        padding: const EdgeInsets.only(
-                            top: 12, bottom: 12, left: 16, right: 16),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              statusButton(goodsItemData.isFinished),
-                              Expanded(
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                    Text(goodsItemData.title,
-                                        textAlign: TextAlign.left,
-                                        style: (goodsItemData.isFinished)
-                                            ? Theme.of(context)
-                                                .textTheme
-                                                .headlineLarge!
-                                                .apply(
-                                                    color: Theme.of(context)
-                                                        .disabledColor)
-                                            : Theme.of(context)
-                                                .textTheme
-                                                .headlineLarge),
-                                    Container(
-                                        child: (goodsItemData
-                                                .description.isNotEmpty)
-                                            ? Text(goodsItemData.description,
-                                                textAlign: TextAlign.left,
-                                                style: (goodsItemData
-                                                        .isFinished)
-                                                    ? Theme.of(context)
-                                                        .textTheme
-                                                        .headlineMedium!
-                                                        .apply(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .disabledColor)
-                                                    : Theme.of(context)
-                                                        .textTheme
-                                                        .headlineMedium)
-                                            : const SizedBox(height: 2)),
-                                  ]))
-                            ])));
-              });
+          return GestureDetector(
+              onTap: () async {
+                await widget.toggleGoodsItem(goodsItemData);
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  padding: const EdgeInsets.only(
+                      top: 12, bottom: 12, left: 16, right: 16),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        statusButton(goodsItemData.isFinished),
+                        Expanded(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                              Text(goodsItemData.title,
+                                  textAlign: TextAlign.left,
+                                  style: (goodsItemData.isFinished)
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .apply(
+                                              color: Theme.of(context)
+                                                  .disabledColor)
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge),
+                              Container(
+                                  child: (goodsItemData.description.isNotEmpty)
+                                      ? Text(goodsItemData.description,
+                                          textAlign: TextAlign.left,
+                                          style: (goodsItemData.isFinished)
+                                              ? Theme.of(context)
+                                                  .textTheme
+                                                  .headlineMedium!
+                                                  .apply(
+                                                      color: Theme.of(context)
+                                                          .disabledColor)
+                                              : Theme.of(context)
+                                                  .textTheme
+                                                  .headlineMedium)
+                                      : const SizedBox(height: 2)),
+                            ]))
+                      ])));
         }));
   }
 

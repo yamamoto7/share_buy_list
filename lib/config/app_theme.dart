@@ -147,7 +147,6 @@ ThemeData getThemeData(
           fontFamily: fontName,
           fontWeight: FontWeight.w500,
           fontSize: 16,
-          letterSpacing: -0.05,
           color: textColor,
         ),
         bodySmall: TextStyle(
@@ -155,7 +154,6 @@ ThemeData getThemeData(
           fontFamily: fontName,
           fontWeight: FontWeight.w500,
           fontSize: 12,
-          letterSpacing: -0.05,
           color: textColor,
         ),
       ),
@@ -165,12 +163,11 @@ ThemeData getThemeData(
       iconTheme: IconThemeData(color: primeColor),
       appBarTheme: AppBarTheme(
         elevation: 0,
-        backgroundColor: backgroundColor,
+        backgroundColor: textReversedColor,
         titleTextStyle: TextStyle(
           fontFamily: fontName,
           fontWeight: FontWeight.w500,
           fontSize: 14,
-          letterSpacing: -0.05,
           color: textColor,
         ),
         iconTheme: IconThemeData(color: textColor),
@@ -178,11 +175,23 @@ ThemeData getThemeData(
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-            textStyle: TextStyle(color: textReversedColor), primary: editColor),
+            textStyle: TextStyle(
+              fontFamily: fontName,
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              color: textReversedColor,
+            ),
+            primary: editColor),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-            textStyle: TextStyle(color: primeColor), primary: primeColor),
+            textStyle: TextStyle(
+              fontFamily: fontName,
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              color: primeColor,
+            ),
+            primary: primeColor),
       ),
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: primeColor,
@@ -197,13 +206,14 @@ ThemeData getThemeData(
       ),
     );
 
-TextField getInputForm(
-    BuildContext context, TextEditingController controller, String label) {
+TextField getInputForm(BuildContext context, TextEditingController controller,
+    String label, bool autofocus) {
   return TextField(
       controller: controller,
       cursorColor: Theme.of(context).primaryColor,
       keyboardType: TextInputType.text,
       style: const TextStyle(fontSize: 14),
+      autofocus: autofocus,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: Theme.of(context).primaryColor),
@@ -216,14 +226,15 @@ TextField getInputForm(
       ));
 }
 
-TextField getInputArea(
-    BuildContext context, TextEditingController controller, String label) {
+TextField getInputArea(BuildContext context, TextEditingController controller,
+    String label, bool autofocus) {
   return TextField(
       controller: controller,
       cursorColor: Theme.of(context).primaryColor,
       keyboardType: TextInputType.multiline,
       maxLines: null,
       style: const TextStyle(fontSize: 14),
+      autofocus: autofocus,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: Theme.of(context).primaryColor),
