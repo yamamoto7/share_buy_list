@@ -61,7 +61,7 @@ class _EditGoodsGroupModalState extends State<EditGoodsGroupModal>
     ];
 
     _modalWidgetList = getModalWidgetList(context, widget.goodsGroupData);
-    var contents = <Widget>[
+    final contents = <Widget>[
       ListView.builder(
           shrinkWrap: true,
           itemCount: _modalWidgetList.length,

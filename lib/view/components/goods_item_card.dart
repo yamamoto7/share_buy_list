@@ -2,13 +2,7 @@
 
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
-import 'package:share_buy_list/service/graphql_handler.dart';
-import 'package:share_buy_list/service/sql_handler.dart';
-import 'package:share_buy_list/view/components/edit_goods_item_modal.dart';
 
 class GoodsItemView extends StatefulWidget {
   const GoodsItemView({

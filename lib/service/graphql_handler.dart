@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/config/env.dart';
-import 'package:intl/intl.dart';
 
 class GraphQlObject {
   static const _token = GRAPHQL_TOKEN;

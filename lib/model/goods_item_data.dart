@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 // final DateFormat _outputFormat = DateFormat('yyyy-MM-dd HH:mm');
 
 class GoodsItemData {

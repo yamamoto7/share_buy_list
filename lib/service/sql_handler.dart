@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
 import 'package:sqflite/sqflite.dart';
