@@ -1,22 +1,22 @@
 // ignore_for_file: prefer_int_literals
 
-// import 'package:share_buy_list/ui_view/edit_todo_item_modal.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:share_buy_list/config/app_theme.dart';
+// ignore: depend_on_referenced_packages
 import 'package:share_buy_list/model/goods_item_data.dart';
-import 'package:share_buy_list/service/graphql_handler.dart';
 
 class GoodsItemView extends StatefulWidget {
-  const GoodsItemView(
-      {Key? key,
-      required this.goodsItemData,
-      required this.changeCurrentGoodsItem})
-      : super(key: key);
+  const GoodsItemView({
+    Key? key,
+    required this.goodsItemData,
+    required this.changeCurrentGoodsItem,
+    required this.removeGoodsItem,
+    required this.toggleGoodsItem,
+  }) : super(key: key);
 
   final GoodsItemData goodsItemData;
   final Function changeCurrentGoodsItem;
+  final Function removeGoodsItem;
+  final Function toggleGoodsItem;
 
   @override
   _GoodsItemViewState createState() => _GoodsItemViewState();
@@ -30,6 +30,14 @@ class _GoodsItemViewState extends State<GoodsItemView>
     super.initState();
   }
 
+  Future<void> pressEditButton() async {
+    Navigator.pop(context, 1);
+  }
+
+  Future<void> pressRemoveButton(GoodsItemData goodsItemData) async {
+    await widget.removeGoodsItem(goodsItemData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return getSlidableCard(context, widget.goodsItemData);
@@ -37,19 +45,9 @@ class _GoodsItemViewState extends State<GoodsItemView>
 
   Widget getSlidableCard(BuildContext context, GoodsItemData goodsItemData) {
     final isDir = widget.goodsItemData.isDirectory;
-    return Slidable(
-      key: ValueKey(widget.goodsItemData.id),
-      endActionPane: const ActionPane(
-        motion: ScrollMotion(),
-        children: [
-          Text('hoge'),
-          Text('fuga'),
-        ],
-      ),
-      child: isDir
-          ? goodsDirCard(context, goodsItemData)
-          : goodsItemCard(context, goodsItemData),
-    );
+    return isDir
+        ? goodsDirCard(context, goodsItemData)
+        : goodsItemCard(context, goodsItemData);
   }
 
   Widget goodsDirCard(BuildContext context, GoodsItemData goodsItemData) {
@@ -61,9 +59,9 @@ class _GoodsItemViewState extends State<GoodsItemView>
             margin: const EdgeInsets.only(top: 4, bottom: 4),
             padding:
                 const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
-            decoration: const BoxDecoration(
-              color: AppTheme.cardBgColor,
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Row(children: <Widget>[
               const SizedBox(width: 20),
@@ -74,16 +72,24 @@ class _GoodsItemViewState extends State<GoodsItemView>
                       children: <Widget>[
                     Text(goodsItemData.title,
                         textAlign: TextAlign.center,
-                        style: AppTheme.cardTextWhite),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .apply(color: Theme.of(context).primaryColorLight)),
                     Container(
                         child: (goodsItemData.description.isNotEmpty)
                             ? Text(goodsItemData.description,
                                 textAlign: TextAlign.left,
-                                style: AppTheme.cardTextWhite)
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .apply(
+                                        color: Theme.of(context)
+                                            .primaryColorLight))
                             : const SizedBox(height: 0))
                   ])),
-              const Icon(Icons.navigate_next_outlined,
-                  color: AppTheme.background)
+              Icon(Icons.navigate_next_outlined,
+                  color: Theme.of(context).primaryColorLight)
             ])));
   }
 
@@ -94,91 +100,58 @@ class _GoodsItemViewState extends State<GoodsItemView>
         // 背景色（ボーダーの色）
         decoration: BoxDecoration(
             border: (goodsItemData.isFinished)
-                ? Border.all(color: AppTheme.goodsCardDisableBorderColor)
-                : Border.all(color: AppTheme.goodsCardActiveBorderColor),
+                ? Border.all(color: Theme.of(context).backgroundColor)
+                : Border.all(color: Theme.of(context).primaryColor),
             borderRadius: const BorderRadius.all(Radius.circular(8.0))),
         child: Builder(builder: (context) {
-          return Mutation<Widget>(
-              options: MutationOptions(
-                document: gql(updateGoodsItem),
-                update: (GraphQLDataProxy cache, result) {},
-                onCompleted: (dynamic resultData) {},
-              ),
-              builder: (runMutation, result) {
-                return GestureDetector(
-                    onTap: () {
-                      if (goodsItemData.isFinished == true) {
-                        runMutation(<String, dynamic>{
-                          'id': goodsItemData.id,
-                          'is_finished': false
-                        });
-                        setState(() {
-                          goodsItemData.isFinished = false;
-                        });
-                      } else if (goodsItemData.isFinished == false) {
-                        runMutation(<String, dynamic>{
-                          'id': goodsItemData.id,
-                          'is_finished': true
-                        });
-                        setState(() {
-                          goodsItemData.isFinished = true;
-                        });
-                      }
-                    },
-                    child: Container(
-                        decoration: const BoxDecoration(
-                          color: AppTheme.background,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                        padding: const EdgeInsets.only(
-                            top: 6, bottom: 6, left: 16, right: 16),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              statusButton(goodsItemData.isFinished),
-                              Expanded(
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                    Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Text(
-                                            'updated ${goodsItemData.updatedAt}',
-                                            textAlign: TextAlign.right,
-                                            style: (goodsItemData.isFinished)
-                                                ? AppTheme.goodsCardDisableDate
-                                                : AppTheme
-                                                    .goodsCardActiveDate)),
-                                    Text(goodsItemData.title,
-                                        textAlign: TextAlign.left,
-                                        style: (goodsItemData.isFinished)
-                                            ? AppTheme.goodsCardDisableTitle
-                                            : AppTheme.goodsCardActiveTitle),
-                                    Container(
-                                        child: (goodsItemData
-                                                .description.isNotEmpty)
-                                            ? Text(goodsItemData.description,
-                                                textAlign: TextAlign.left,
-                                                style: (goodsItemData
-                                                        .isFinished)
-                                                    ? AppTheme
-                                                        .goodsCardDisableText
-                                                    : AppTheme
-                                                        .goodsCardActiveText)
-                                            : const SizedBox(height: 0)),
-                                    Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Text(
-                                            'by ${goodsItemData.updatedBy}',
-                                            textAlign: TextAlign.right,
-                                            style: (goodsItemData.isFinished)
-                                                ? AppTheme.goodsCardDisableDate
-                                                : AppTheme
-                                                    .goodsCardActiveDate)),
-                                  ]))
-                            ])));
-              });
+          return GestureDetector(
+              onTap: () async {
+                await widget.toggleGoodsItem(goodsItemData);
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  padding: const EdgeInsets.only(
+                      top: 12, bottom: 12, left: 16, right: 16),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        statusButton(goodsItemData.isFinished),
+                        Expanded(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                              Text(goodsItemData.title,
+                                  textAlign: TextAlign.left,
+                                  style: (goodsItemData.isFinished)
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .apply(
+                                              color: Theme.of(context)
+                                                  .disabledColor)
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge),
+                              Container(
+                                  child: (goodsItemData.description.isNotEmpty)
+                                      ? Text(goodsItemData.description,
+                                          textAlign: TextAlign.left,
+                                          style: (goodsItemData.isFinished)
+                                              ? Theme.of(context)
+                                                  .textTheme
+                                                  .headlineMedium!
+                                                  .apply(
+                                                      color: Theme.of(context)
+                                                          .disabledColor)
+                                              : Theme.of(context)
+                                                  .textTheme
+                                                  .headlineMedium)
+                                      : const SizedBox(height: 2)),
+                            ]))
+                      ])));
         }));
   }
 
@@ -189,8 +162,8 @@ class _GoodsItemViewState extends State<GoodsItemView>
       width: 20,
       decoration: BoxDecoration(
         border: isFinished
-            ? Border.all(color: AppTheme.goodsCardDisableButtonColor)
-            : Border.all(color: AppTheme.goodsCardActiveButtonColor),
+            ? Border.all(color: Theme.of(context).disabledColor)
+            : Border.all(color: Theme.of(context).primaryColor),
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
@@ -200,10 +173,10 @@ class _GoodsItemViewState extends State<GoodsItemView>
               margin: const EdgeInsets.all(2),
               height: 16,
               width: 16,
-              decoration: const BoxDecoration(
-                color: AppTheme.goodsCardDisableButtonColor,
+              decoration: BoxDecoration(
+                color: Theme.of(context).disabledColor,
                 //角丸にする
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(10),
                 ),
               ),

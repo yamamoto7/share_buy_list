@@ -3,24 +3,30 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:share_buy_list/config/app_theme.dart';
+import 'package:share_buy_list/config/config.dart';
 import 'package:share_buy_list/config/user_config.dart';
 import 'package:share_buy_list/data/seed_for_init.dart';
 import 'package:share_buy_list/model/user_data.dart';
 import 'package:share_buy_list/service/graphql_handler.dart';
+import 'package:share_buy_list/service/sql_handler.dart';
 import 'package:share_buy_list/view/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: avoid_void_async
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter();
-  final box = await Hive.openBox<dynamic>('config');
-  final user = await initUser(box);
-  await initSeed(box, user.id);
+  final prefs = await SharedPreferences.getInstance();
+  final user = await initUser(prefs);
+  await SqlObject.initSql();
   UserConfig().init(user);
+  await Config.hoge();
+  //[FIXME: delete] print(Directory.systemTemp.path);
   print(Directory.systemTemp.path);
 
   await SystemChrome.setPreferredOrientations(
@@ -31,8 +37,40 @@ void main() async {
           )));
 }
 
-class StartWidget extends StatelessWidget {
+class StartWidget extends StatefulWidget {
   const StartWidget({Key? key}) : super(key: key);
+
+  @override
+  State<StartWidget> createState() => _StartWidgetState();
+}
+
+class _StartWidgetState extends State<StartWidget> {
+  late ThemeMode themeMode;
+  late Locale language;
+  late AppStyle appStyle;
+  @override
+  void initState() {
+    language = Config.getLanguageLocale();
+    themeMode = Config.themeMode;
+    appStyle = AppStyle();
+    super.initState();
+  }
+
+  static void setLanguage(BuildContext context, Locale value) {
+    final stateObject = context.findAncestorStateOfType<_StartWidgetState>();
+
+    stateObject!.setState(() {
+      stateObject.language = value;
+    });
+  }
+
+  static void setThememode(BuildContext context, ThemeMode value) {
+    final stateObject = context.findAncestorStateOfType<_StartWidgetState>();
+
+    stateObject!.setState(() {
+      stateObject.themeMode = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,18 +86,34 @@ class StartWidget extends StatelessWidget {
     return MaterialApp(
       title: 'Share Buy List',
       debugShowCheckedModeBanner: true,
-      theme:
-          ThemeData(primarySwatch: Colors.blue, textTheme: AppTheme.textTheme),
+      theme: appStyle.themeData,
+      darkTheme: appStyle.themeDataDark,
+      themeMode: themeMode,
+      /* ThemeMode.system to follow system theme, 
+         ThemeMode.light for light theme, 
+         ThemeMode.dark for dark theme
+      */
       initialRoute: '/',
-      home: const AppHomeScreen(),
+      home: const AppHomeScreen(
+          isFirstAccess: false,
+          tab: 0,
+          setThememode: setThememode,
+          setLanguage: setLanguage),
+      localizationsDelegates: const [
+        L10n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: language,
+      supportedLocales: L10n.supportedLocales,
     );
   }
 }
 
-Future<User> initUser(dynamic box) async {
-  final userName = box.get('user_name').toString();
-  final dynamic userIdRaw = box.get('user_id');
-  final userId = (userIdRaw == null) ? '' : userIdRaw.toString();
+Future<User> initUser(SharedPreferences prefs) async {
+  final userName = prefs.getString('user_name') ?? '';
+  final userId = prefs.getString('user_id') ?? '';
 
   User? user;
   if (userId.isNotEmpty) {
@@ -75,8 +129,8 @@ Future<User> initUser(dynamic box) async {
               .toString()),
           name: queryResult.data!['insert_user']['returning'][0]['name']
               .toString());
-      await box.put('user_id', user.id);
-      await box.put('user_name', user.name);
+      prefs.setString('user_name', user.name).toString();
+      prefs.setString('user_id', user.id).toString();
       final dynamic seedQueryResult =
           await graphQlObject.query(seedQueryForInit(user.id));
       print(seedQueryResult);
@@ -86,19 +140,4 @@ Future<User> initUser(dynamic box) async {
     }
   }
   return user;
-}
-
-Future<bool> initSeed(dynamic box, String userId) async {
-  final seedVersion = box.get('seed_version').toString();
-  if (seedVersion.isEmpty && userId.isNotEmpty) {
-    try {
-      final dynamic seedQueryResult =
-          await graphQlObject.query(seedQueryForInit(userId));
-      await box.put('seed_version', 1);
-      print(seedQueryResult);
-    } catch (e) {
-      return false;
-    }
-  }
-  return true;
 }

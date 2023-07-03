@@ -1,4 +1,4 @@
-name: Deploy Android App
+name: Deploy App
 
 on:
   push:
@@ -33,9 +33,9 @@ jobs:
       - name: flutter analyze
         run: flutter analyze
 
-  build:
-    name: build
-    needs: [lint]
+  build_android:
+    name: build android
+    # needs: [lint]
     runs-on: ubuntu-latest
 
     steps:
@@ -74,9 +74,9 @@ jobs:
           name: android
           path: build/app/outputs/flutter-apk/app-release.apk
 
-  deploy:
-    name: deploy
-    needs: [build]
+  deploy_android:
+    name: deploy android
+    needs: [build_android]
     runs-on: ubuntu-latest
     steps:
 
@@ -94,9 +94,10 @@ jobs:
 
       # Deploy to Firebase
       - name: Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.4
         with:
           appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           file: android/app-release.apk
           groups: primary_testers
+

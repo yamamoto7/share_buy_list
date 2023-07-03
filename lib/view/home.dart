@@ -3,17 +3,27 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/env.dart';
 import 'package:share_buy_list/config/size_config.dart';
 import 'package:share_buy_list/model/goods_item_data.dart';
+import 'package:share_buy_list/view/components/loading_screen.dart';
 import 'package:share_buy_list/view/config_screen.dart';
 import 'package:share_buy_list/view/show_goods_group_items_screen.dart';
 import 'package:share_buy_list/view/show_goods_items_screen.dart';
 
 class AppHomeScreen extends StatefulWidget {
-  const AppHomeScreen({Key? key}) : super(key: key);
+  const AppHomeScreen(
+      {Key? key,
+      required this.isFirstAccess,
+      required this.tab,
+      required this.setThememode,
+      required this.setLanguage})
+      : super(key: key);
 
+  final bool isFirstAccess;
+  final int tab;
+  final Function setThememode;
+  final Function setLanguage;
   @override
   _AppHomeScreenState createState() => _AppHomeScreenState();
 }
@@ -21,20 +31,22 @@ class AppHomeScreen extends StatefulWidget {
 class _AppHomeScreenState extends State<AppHomeScreen>
     with TickerProviderStateMixin {
   late AnimationController animationController;
-  bool visibleLoading = true;
+  bool visibleLoading = false;
   PersistentTabController? _controller;
   AdWidget? adWidget;
   final homeBannerAd = getBottomBannerAd(0);
 
   @override
   void initState() {
-    _controller = PersistentTabController(initialIndex: 0);
-    adWidget = AdWidget(ad: homeBannerAd);
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
+    if (!widget.isFirstAccess) {
+      _controller = PersistentTabController(initialIndex: 0);
+      adWidget = AdWidget(ad: homeBannerAd);
+      animationController = AnimationController(
+          duration: const Duration(milliseconds: 600), vsync: this);
 
+      animationController.forward();
+    }
     super.initState();
-    animationController.forward();
   }
 
   @override
@@ -45,7 +57,6 @@ class _AppHomeScreenState extends State<AppHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    // init
     SizeConfig().init(context);
     return Stack(children: [
       PersistentTabView(context,
@@ -53,14 +64,13 @@ class _AppHomeScreenState extends State<AppHomeScreen>
           screens: _buildScreens(),
           items: _navBarsItems(),
           confineInSafeArea: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).bottomAppBarColor,
           handleAndroidBackButtonPress: true,
           resizeToAvoidBottomInset: true,
           stateManagement: true,
           hideNavigationBarWhenKeyboardShows: true,
           decoration: NavBarDecoration(
             borderRadius: BorderRadius.circular(20),
-            colorBehindNavBar: Colors.white,
           ),
           popAllScreensOnTapOfSelectedTab: true,
           popActionScreens: PopActionScreensType.all,
@@ -73,7 +83,8 @@ class _AppHomeScreenState extends State<AppHomeScreen>
             curve: Curves.ease,
             duration: Duration(milliseconds: 200),
           ),
-          navBarStyle: NavBarStyle.style10)
+          navBarStyle: NavBarStyle.style10),
+      OverlayLoadingMolecules(visible: visibleLoading)
     ]);
   }
 
@@ -81,7 +92,8 @@ class _AppHomeScreenState extends State<AppHomeScreen>
     return [
       ShowGoodsGroupItemsScreen(
           setLoading: setLoading, openGoodsItem: openGoodsItem),
-      const ConfigScreen(),
+      ConfigScreen(
+          setThememode: widget.setThememode, setLanguage: widget.setLanguage),
     ];
   }
 
@@ -90,54 +102,18 @@ class _AppHomeScreenState extends State<AppHomeScreen>
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.dashboard_customize_rounded),
         title: 'Home',
-        activeColorPrimary: AppTheme.tabItemColor,
-        activeColorSecondary: AppTheme.white,
-        inactiveColorPrimary: AppTheme.tabItemColor,
+        activeColorPrimary: Theme.of(context).primaryColor,
+        activeColorSecondary: Theme.of(context).backgroundColor,
+        inactiveColorPrimary: Theme.of(context).primaryColor,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.settings_rounded),
         title: 'Settings',
-        activeColorPrimary: AppTheme.tabItemColor,
-        activeColorSecondary: AppTheme.white,
-        inactiveColorPrimary: AppTheme.tabItemColor,
+        activeColorPrimary: Theme.of(context).primaryColor,
+        activeColorSecondary: Theme.of(context).backgroundColor,
+        inactiveColorPrimary: Theme.of(context).primaryColor,
       ),
     ];
-  }
-
-  void openTodoItem(GoodsItemData goodsItemData) {
-    final bannerAd = getBottomBannerAd(1);
-    final adContainer = Positioned(
-        bottom: 0,
-        child: Container(
-            decoration: const BoxDecoration(
-              color: AppTheme.background,
-            ),
-            padding:
-                EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-            width: MediaQuery.of(context).size.width,
-            height: bannerAd.size.height.toDouble() +
-                MediaQuery.of(context).padding.bottom,
-            child: adWidget));
-
-    animationController.reverse().then<dynamic>((data) {
-      if (!mounted) {
-        return;
-      }
-
-      pushNewScreen<void>(context,
-          screen: Stack(children: [
-            Padding(
-                padding:
-                    EdgeInsets.only(bottom: bannerAd.size.height.toDouble()),
-                child: ShowGoodsItemsScreen(
-                    goodsItem: goodsItemData,
-                    goodsItemDepth: 1,
-                    openGoodsItem: openGoodsItem,
-                    isAddableTodoGroup: true,
-                    setLoading: setLoading)),
-            adContainer
-          ]));
-    });
   }
 
   void openGoodsItem(GoodsItemData goodsItemData, int goodsItemPageDepth) {
@@ -151,9 +127,6 @@ class _AppHomeScreenState extends State<AppHomeScreen>
     final adContainer = Positioned(
         bottom: 0,
         child: Container(
-            decoration: const BoxDecoration(
-              color: AppTheme.background,
-            ),
             padding:
                 EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
             width: MediaQuery.of(context).size.width,
@@ -169,8 +142,6 @@ class _AppHomeScreenState extends State<AppHomeScreen>
                   goodsItem: goodsItemData,
                   openGoodsItem: openGoodsItem,
                   setLoading: setLoading,
-                  isAddableTodoGroup:
-                      goodsItemPageDepth + 1 < MAX_GOODS_GROUP_NUM,
                   goodsItemDepth: goodsItemPageDepth + 1)),
           adContainer
         ]));

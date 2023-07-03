@@ -32,9 +32,10 @@ class GraphQlObject {
     ),
   );
 
-  Future<dynamic> query(String query) async {
+  Future<QueryResult<dynamic>> query(String query) async {
     final result = await client.value.query<dynamic>(QueryOptions<dynamic>(
       document: gql(query),
+      fetchPolicy: FetchPolicy.noCache,
     ));
 
     if (result.hasException) {
@@ -65,7 +66,7 @@ String addNewUser(String name, int iconId) {
   ''';
 }
 
-String fetchUserGoodsItems(String? userId) {
+String fetchUserGoodsItems(String userId) {
   return '''
 query fetchUserGoodsItems {
   user_goods_item (where: {user_id: {_eq: "$userId"}}) {
@@ -79,9 +80,12 @@ query fetchUserGoodsItems {
       created_at
       updated_at
       goods_item_id
+      is_deleted
+      last_updated_user_id
       last_updated_user {
         id
         name
+        icon_id
       }
       user_goods_items {
         id
@@ -134,23 +138,77 @@ String addGoodsItem = '''
         description
         created_at
         updated_at
+        is_deleted
       }
     }
   }
 ''';
 
-String updateGoodsItem = '''
-mutation UpdateGoodsItem (\$id: uuid!, \$is_finished: Boolean) {
-  update_goods_item_by_pk(pk_columns: {id: \$id}, _set: {is_finished: \$is_finished}) {
+String toggleGoodsItemQuery(String goodsItemID, bool isFinished) {
+  return '''
+mutation ToggleGoodsItem {
+  update_goods_item_by_pk(pk_columns: {id: "$goodsItemID"}, _set: {is_finished: $isFinished}) {
     updated_at
   }
 }
 ''';
+}
 
-String fetchGoodsItems(String goodsItemID) {
+String updateGoodsItemData = '''
+mutation UpdateGoodsItemData (\$id: uuid!, \$user_id: uuid, \$title: String, \$description: String) {
+  update_goods_item_by_pk(
+    pk_columns: {id: \$id}, _set: {last_updated_user_id: \$user_id, title: \$title, description: \$description}) {
+      id
+      is_finished
+      is_directory
+      title
+      description
+      created_at
+      updated_at
+  }
+}
+''';
+
+String updateGoodsGroup = '''
+  mutation UpdateGoodsItem (\$id: bigint!, \$user_id: uuid, \$title: String, \$description: String) {
+    update_goods_item_by_pk(
+      pk_columns: {id: \$id}, _set: {last_updated_user_id: \$user_id, title: \$title, description: \$description}) {
+        id
+        is_finished
+        is_directory
+        title
+        description
+        created_at
+        updated_at
+    }
+  }
+''';
+
+String deleteGoodsItem(String goodsItemID) {
+  return '''
+mutation DeleteGoodsItem {
+  delete_goods_item_by_pk(id: "$goodsItemID") {
+    id
+  }
+}
+''';
+}
+
+String deleteGoodsGroup(String userGoodsItemID) {
+  return '''
+mutation DeleteUserGoodsItem {
+  delete_user_goods_item_by_pk(id: "$userGoodsItemID") {
+    id
+  }
+}
+''';
+}
+
+String fetchGoodsItems(
+    String goodsItemID, String lastUpdatedAt, String userID) {
   return '''
 subscription fetchGoodsItem {
-  goods_item(order_by: {created_at: desc, is_directory: desc, id: desc}, where: {goods_item_id: {_eq: "$goodsItemID"}}) {
+  goods_item(order_by: {updated_at: asc, is_directory: desc, id: desc}, where: {goods_item_id: {_eq: "$goodsItemID"}, updated_at: {_gt: "$lastUpdatedAt"}, last_updated_user_id: {_neq: "$userID"}}) {
     id
     is_finished
     is_directory
@@ -158,6 +216,8 @@ subscription fetchGoodsItem {
     description
     created_at
     updated_at
+    last_updated_user_id
+    is_deleted
     last_updated_user {
       id
       name

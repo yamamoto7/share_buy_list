@@ -1,0 +1,53 @@
+{
+    "title": "Share Buy",
+    "listName": "リスト名",
+    "description": "説明",
+    "createNew": "新規作成",
+    "create": "作成",
+    "cancel": "キャンセル",
+    "confirm": "確定",
+    "join": "リストに参加",
+    "name": "名前",
+    "listName": "リストの名前",
+    "listId": "リストID",
+    "userList": "ユーザー一覧",
+    "manageUsers": "ユーザー管理",
+    "memo": "メモ",
+    "item": "アイテム",
+    "folder": "フォルダ",
+    "invite": "招待",
+    "edit": "編集",
+    "areYouDelete": "削除しますか？",
+    "delete": "削除",
+    "setting": "設定",
+    "close": "閉じる",
+    "update": "更新",
+    "copy": "コピー",
+    "copied": "コピーしました！",
+    "textJoinList": "※ 他のユーザーが作成したリストに参加します。",
+    "textGetID": "※ リストのIDを共有してもらい、入力してください。",
+    "textNameChange": "※ 名前は後から変更できます",
+    "textAddUser": "※ ユーザーの追加は作成後に行えます",
+    "textMaxDepthNotion": "現在フォルダの深さは{depth}層までに制限されています。",
+    "@textMaxDepthNotion": {
+        "placeholders": {
+            "depth": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "editGoodsGroupModalJoniUserNumLimit": "※ リストに参加できるユーザーは最大5名です。",
+    "showGoodsGroupItemsScreenGroupNumLimit": "※ 作成できるリストの数は最大3個です。",
+    "showGoodsGroupItemsScreenAddItemLeft": "下の",
+    "showGoodsGroupItemsScreenAddItemRight": "からアイテムを追加できます。",
+    "showGoodsGroupItemsScreenFetchError": "データの同期に失敗しました。",
+    "showGoodsItemsScreenFetchError": "データの同期に失敗しました。",
+    "settingAccount": "アカウント設定",
+    "settingUserName": "ユーザー名",
+    "settingLanguage": "言語(Language)",
+    "settingShowInit": "welcomeスクリーンを見る",
+    "settingContact": "お問い合わせ",
+    "settingDarkMode": "ダークモード",
+    "settingAbout": "このアプリについて"
+}

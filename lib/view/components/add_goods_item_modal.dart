@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:share_buy_list/config/app_theme.dart';
 import 'package:share_buy_list/config/env.dart';
@@ -22,34 +24,42 @@ class AddGoodsItemModal extends StatefulWidget {
   final bool isDirAddable;
 
   @override
-  _AddTodoItemModalState createState() => _AddTodoItemModalState();
+  _AddGoodsItemModalState createState() => _AddGoodsItemModalState();
 }
 
-class _AddTodoItemModalState extends State<AddGoodsItemModal>
+class _AddGoodsItemModalState extends State<AddGoodsItemModal>
     with TickerProviderStateMixin {
-  List<Widget> _selectItems = [
-    const Tab(text: 'アイテム'),
-    const Tab(text: 'フォルダ')
-  ];
+  late List<Widget> _selectItems;
   bool selectIsDir = false;
   TabController? _tabController;
 
-  late TextEditingController _todoTitleController;
-  late TextEditingController _todoDescController;
+  late TextEditingController _goodsTitleController;
+  late TextEditingController _goodsDescController;
   late List<Widget> _modalWidgetList;
 
   @override
   void initState() {
-    _todoTitleController = TextEditingController(text: '');
-    _todoDescController = TextEditingController(text: '');
+    _goodsTitleController = TextEditingController(text: '');
+    _goodsDescController = TextEditingController(text: '');
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     if (!widget.isDirAddable) {
-      _selectItems = [const Tab(text: 'アイテム')];
+      _selectItems = [Tab(text: L10n.of(context)!.item)];
+    } else {
+      _selectItems = [
+        Tab(text: L10n.of(context)!.item),
+        Tab(text: L10n.of(context)!.folder)
+      ];
     }
 
-    // TabControllerの初期化
     _tabController = TabController(length: _selectItems.length, vsync: this);
     _modalWidgetList = getModalWidgetList(context);
-    super.initState();
   }
 
   @override
@@ -83,18 +93,19 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
                             curve: Curves.fastOutSlowIn)),
                     child: DecoratedBox(
                         decoration: BoxDecoration(
-                            color: AppTheme.colorTMPDark,
-                            border: Border.all(color: AppTheme.colorTMPDark),
+                            color: Theme.of(context).primaryColor,
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor),
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                  color: Colors.grey,
+                                  color: Theme.of(context).shadowColor,
                                   blurRadius: 10,
                                   spreadRadius: 1)
                             ]),
-                        child: const Icon(
+                        child: Icon(
                           Icons.add,
-                          color: AppTheme.white,
+                          color: Theme.of(context).primaryColorLight,
                           size: 30,
                         ))))));
   }
@@ -103,12 +114,11 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
     return <Widget>[
       TabBar(
           controller: _tabController,
-          indicatorColor: Colors.green,
           tabs: _selectItems,
-          labelColor: Colors.black,
+          labelColor: Theme.of(context).primaryColor,
           // add it here
           indicator: DotIndicator(
-            color: Colors.black,
+            color: Theme.of(context).primaryColor,
             distanceFromCenter: 16,
             radius: 3,
             paintingStyle: PaintingStyle.fill,
@@ -117,9 +127,13 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
             selectIsDir = index == 1;
           }),
       const SizedBox(height: 20),
-      Container(child: AppTheme.getInputForm(_todoTitleController, '名前')),
+      Container(
+          child: getInputForm(
+              context, _goodsTitleController, L10n.of(context)!.name, true)),
       const SizedBox(height: 8),
-      Container(child: AppTheme.getInputArea(_todoDescController, 'メモ')),
+      Container(
+          child: getInputArea(
+              context, _goodsDescController, L10n.of(context)!.memo, false)),
       const SizedBox(height: 20),
       Mutation<Widget>(
         options: MutationOptions(
@@ -132,22 +146,19 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
             height: 50,
             // リスト追加ボタン
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  textStyle: const TextStyle(color: AppTheme.white),
-                  primary: AppTheme.colorTMPDark),
               onPressed: () {
                 runMutation(<String, dynamic>{
-                  'title': _todoTitleController.text,
-                  'description': _todoDescController.text,
+                  'title': _goodsTitleController.text,
+                  'description': _goodsDescController.text,
                   'goods_item_id': widget.goodsItemData.id,
                   'user_id': UserConfig.userID,
                   'is_directory': selectIsDir
                 });
                 Navigator.pop(context, 1);
-                _todoTitleController.clear();
-                _todoDescController.clear();
+                _goodsTitleController.clear();
+                _goodsDescController.clear();
               },
-              child: const Text('作成'),
+              child: Text(L10n.of(context)!.create),
             ),
           );
         },
@@ -157,22 +168,19 @@ class _AddTodoItemModalState extends State<AddGoodsItemModal>
         height: 50,
         // リスト追加ボタン
         child: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-              textStyle: const TextStyle(color: AppTheme.colorTMPDark),
-              primary: AppTheme.colorTMPDark),
           onPressed: () {
             Navigator.pop(context, 1);
           },
-          child: const Text('キャンセル'),
+          child: Text(L10n.of(context)!.cancel),
         ),
       ),
       if (!widget.isDirAddable)
-        const Padding(
-          padding: EdgeInsets.only(left: 8, top: 8),
+        Padding(
+          padding: const EdgeInsets.only(left: 8, top: 8),
           child: Text(
-              '※ 大変申し訳ございませんが、現在フォルダの階層は最大$MAX_GOODS_ITEM_DEPTH層に制限しています。\n※ ご意見・ご要望は Setting > 「お問い合わせ・ご要望」 から随時受け付けています。',
+              L10n.of(context)!.textMaxDepthNotion(MAX_GOODS_ITEM_DEPTH),
               textAlign: TextAlign.left,
-              style: AppTheme.bodyTextSmaller),
+              style: Theme.of(context).textTheme.bodySmall),
         ),
     ];
   }
